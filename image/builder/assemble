@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -x
+
+# Copy files to working directory.
+
+shopt -u dotglob
+
+cp -rf /tmp/src/* .
+
+rm -rf /tmp/src

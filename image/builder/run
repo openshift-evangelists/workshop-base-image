@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -x
+
+# Run supervisord.
+
+exec /opt/terminal/bin/supervisord --nodaemon \
+    --configuration /opt/terminal/etc/supervisord.conf
