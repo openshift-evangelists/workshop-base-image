@@ -5,7 +5,6 @@ unset BASH_ENV PROMPT_COMMAND ENV
 whoami &> /dev/null || STATUS=$? && true
 
 if [[ "$STATUS" != "0" ]]; then
-    echo "Adding passwd file entry for $(id -u)"
     cat /etc/passwd | sed -e "s/^default:/builder:/" > /tmp/passwd
     echo "default:x:$(id -u):$(id -g):,,,:/opt/app-root/src:/bin/bash" >> /tmp/passwd
     cat /tmp/passwd > /etc/passwd
