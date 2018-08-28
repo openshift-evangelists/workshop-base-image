@@ -27,7 +27,7 @@ RUN HOME=/opt/terminal && \
     $HOME/.local/bin/pip install --no-cache-dir --user virtualenv && \
     $HOME/.local/bin/virtualenv /opt/terminal && \
     source /opt/terminal/bin/activate && \
-    pip install supervisor && \
+    pip install supervisor==3.3.4 && \
     mkdir -p /opt/app-root/etc && \
     pip install https://github.com/GrahamDumpleton/butterfly/archive/uri-root-path.zip && \
     mkdir /opt/terminal/tmp && \
