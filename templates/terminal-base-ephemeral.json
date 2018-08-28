@@ -145,7 +145,7 @@
                         }
                     },
                     "spec": {
-                        "serviceAccountName": "${APPLICATION_NAME}-hub",
+                        "serviceAccountName": "${APPLICATION_NAME}-role",
                         "containers": [
                             {
                                 "name": "terminal",
