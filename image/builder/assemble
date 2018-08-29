@@ -9,3 +9,7 @@ shopt -u dotglob
 cp -rf /tmp/src/* .
 
 rm -rf /tmp/src
+
+# Fix up permissions in application area.
+
+fix-permissions /opt/app-root

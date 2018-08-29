@@ -35,6 +35,12 @@ if [ x"$OPENSHIFT_USER" != x"" ]; then
     oc config use-context me
 fi
 
+# Run startup actions if supplied.
+
+if [ -x /opt/app-root/etc/init.d/rc.local ]; then
+    /opt/app-root/etc/init.d/rc.local
+fi
+
 # Run supervisord.
 
 exec /opt/terminal/bin/supervisord --nodaemon \

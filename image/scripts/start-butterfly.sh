@@ -22,8 +22,8 @@ if [ -f /opt/terminal/etc/motd ]; then
     MOTD_FILE=/opt/terminal/etc/motd
 fi
 
-if [ -f $HOME/.config/butterfly/motd ]; then
-    MOTD_FILE=$HOME/.config/butterfly/motd
+if [ -f /opt/app-root/etc/motd ]; then
+    MOTD_FILE=/opt/app-root/etc/motd
 fi
 
 exec /opt/terminal/bin/butterfly.server.py --port=8080 \
