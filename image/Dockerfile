@@ -1,5 +1,14 @@
 FROM centos/s2i-base-centos7:latest
 
+# Install additional common utilities.
+
+RUN HOME=/root && \
+    INSTALL_PKGS="nano" && \
+    yum install -y centos-release-scl && \
+    yum -y --setopt=tsflags=nodocs install --enablerepo=centosplus $INSTALL_PKGS && \
+    rpm -V $INSTALL_PKGS && \
+    yum -y clean all --enablerepo='*'
+
 # Install OpenShift client.
 
 ENV OC_VERSION=3.9.31
