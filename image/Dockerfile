@@ -53,12 +53,13 @@ COPY builder/. /usr/libexec/s2i/
 RUN echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
     chmod g+w /etc/passwd
 
-RUN mkdir /opt/terminal/etc/init.d && \
-    touch /opt/terminal/etc/envvars && \
+RUN touch /opt/terminal/etc/envvars && \
     chown -R 1001:0 /opt/terminal/etc/envvars && \
     chmod g+w /opt/terminal/etc/envvars
 
-RUN chown -R 1001:0 /opt/app-root && \
+RUN mkdir -p /opt/app-root/etc/init.d && \
+    mkdir -p /opt/app-root/etc/profile.d && \
+    chown -R 1001:0 /opt/app-root && \
     fix-permissions /opt/app-root
 
 LABEL io.k8s.display-name="Terminal (Base Image)." \
