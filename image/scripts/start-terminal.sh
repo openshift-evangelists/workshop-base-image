@@ -5,6 +5,6 @@ set -a
 set +a
 
 export SHELL=/bin/bash
-export PS1="[$JUPYTERHUB_USER:\w ] $ "
+export PS1="[$OPENSHIFT_USER:\w ] $ "
 
 exec /bin/bash "$@"
