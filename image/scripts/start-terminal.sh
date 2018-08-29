@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -a
-. /opt/terminal/etc/profile.d/sh.terminal
+. /opt/terminal/etc/envvars
 set +a
 
 export SHELL=/bin/bash

@@ -39,9 +39,6 @@ RUN HOME=/opt/terminal && \
     pip install supervisor==3.3.4 && \
     mkdir -p /opt/app-root/etc && \
     pip install https://github.com/GrahamDumpleton/butterfly/archive/uri-root-path.zip && \
-    mkdir /opt/terminal/tmp && \
-    chown -R 1001:0 /opt/terminal/tmp && \
-    fix-permissions /opt/terminal/tmp && \
     rm /opt/app-root/etc/scl_enable
 
 ENV BASH_ENV=/opt/terminal/etc/profile \
@@ -56,8 +53,9 @@ COPY builder/. /usr/libexec/s2i/
 RUN echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
     chmod g+w /etc/passwd
 
-RUN chown -R 1001:0 /opt/terminal/etc/profile.d/sh.terminal && \
-    chmod g+w /opt/terminal/etc/profile.d/sh.terminal
+RUN touch /opt/terminal/etc/envvars && \
+    chown -R 1001:0 /opt/terminal/etc/envvars && \
+    chmod g+w /opt/terminal/etc/envvars
 
 RUN chown -R 1001:0 /opt/app-root && \
     fix-permissions /opt/app-root

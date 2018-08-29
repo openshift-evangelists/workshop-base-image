@@ -13,14 +13,8 @@ URI_ROOT_PATH=${URI_ROOT_PATH:-}
 mkdir -p $HOME/.config/butterfly
 touch $HOME/.config/butterfly/butterfly.conf
 
-# Now execute the program. We need to supply a shell script for the
+# Now execute the program. We need to supply a startup script for the
 # shell to setup the environment.
-
-if [ x"$JUPYTERHUB_USER" != x "" ]; then
-    oc config set-cluster local --server "https://$KUBERNETES_PORT_443_TCP_ADDR"
-    oc config set-context me --cluster local --user "$JUPYTERHUB_USER"
-    oc config use-context me
-fi
 
 MOTD_FILE=motd
 

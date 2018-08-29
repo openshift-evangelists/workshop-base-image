@@ -2,6 +2,39 @@
 
 set -x
 
+# Add entry to /etc/passwd file.
+
+whoami &> /dev/null || STATUS=$? && true
+
+if [[ "$STATUS" != "0" ]]; then
+    cat /etc/passwd | sed -e "s/^default:/builder:/" > /tmp/passwd
+    echo "default:x:$(id -u):$(id -g):,,,:/opt/app-root/src:/bin/bash" >> /tmp/passwd
+    cat /tmp/passwd > /etc/passwd
+    rm /tmp/passwd
+fi
+
+# Preserve select environment variables so can set in terminal session.
+
+if [ ! -s /opt/terminal/etc/envvars ]; then
+    env | egrep "^PATH=" >> /opt/terminal/etc/envvars
+    env | egrep "^LD_LIBRARY_PATH=" >> /opt/terminal/etc/envvars
+    env | egrep "^KUBERNETES_" >> /opt/terminal/etc/envvars
+    env | egrep "^HOSTNAME=" >> /opt/terminal/etc/envvars
+    env | egrep "^OPENSHIFT_USER=" >> /opt/terminal/etc/envvars
+fi
+
+# Setup 'oc' client in advance if configured to be using local OpenShift.
+
+if [ x"$OPENSHIFT_USER" != x"" ]; then
+    oc config set-cluster local \
+            --server "https://$KUBERNETES_PORT_443_TCP_ADDR" \
+            --insecure-skip-tls-verify
+
+    oc config set-context me --cluster local --user "$OPENSHIFT_USER"
+
+    oc config use-context me
+fi
+
 # Run supervisord.
 
 exec /opt/terminal/bin/supervisord --nodaemon \

@@ -1,30 +1,15 @@
 unset BASH_ENV PROMPT_COMMAND ENV
 
-# Add entry to /etc/passwd file.
-
-whoami &> /dev/null || STATUS=$? && true
-
-if [[ "$STATUS" != "0" ]]; then
-    cat /etc/passwd | sed -e "s/^default:/builder:/" > /tmp/passwd
-    echo "default:x:$(id -u):$(id -g):,,,:/opt/app-root/src:/bin/bash" >> /tmp/passwd
-    cat /tmp/passwd > /etc/passwd
-    rm /tmp/passwd
-fi
-
 # Read in additional application profile files.
 
-for i in /opt/terminal/etc/profile.d/*.sh /opt/app-root/etc/profile.d/*.sh; do
+for i in /opt/terminal/etc/profile.d/*.sh /opt/terminal/etc/profile.d/sh.local; do
     if [ -r "$i" ]; then
 	. "$i" >/dev/null
     fi
 done
 
-# Preserve select environment variables so can set in terminal session.
-
-if [ ! -s /opt/terminal/etc/profile.d/sh.terminal ]; then
-    env | egrep "^PATH=" >> /opt/terminal/etc/profile.d/sh.terminal
-    env | egrep "^LD_LIBRARY_PATH=" >> /opt/terminal/etc/profile.d/sh.terminal
-    env | egrep "^KUBERNETES_" >> /opt/terminal/etc/profile.d/sh.terminal
-    env | egrep "^HOSTNAME=" >> /opt/terminal/etc/profile.d/sh.terminal
-    env | egrep "^JUPYTERHUB_USER=" >> /opt/terminal/etc/profile.d/sh.terminal
-fi
+for i in /opt/app-root/etc/profile.d/*.sh /opt/app-root/etc/profile.d/sh.local; do
+    if [ -r "$i" ]; then
+	. "$i" >/dev/null
+    fi
+done
