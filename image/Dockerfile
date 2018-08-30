@@ -11,7 +11,7 @@ RUN HOME=/root && \
 
 # Install OpenShift client.
 
-ENV OC_VERSION=3.9.31
+ARG OC_VERSION=3.10.41
 RUN curl -s -o /tmp/oc.tar.gz "https://mirror.openshift.com/pub/openshift-v3/clients/$OC_VERSION/linux/oc.tar.gz" && \
     tar -C /usr/local/bin -zxvf /tmp/oc.tar.gz oc && \
     rm /tmp/oc.tar.gz && \
