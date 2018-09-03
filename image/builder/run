@@ -20,17 +20,17 @@ if [ ! -s /opt/terminal/etc/envvars ]; then
     env | egrep "^LD_LIBRARY_PATH=" >> /opt/terminal/etc/envvars
     env | egrep "^KUBERNETES_" >> /opt/terminal/etc/envvars
     env | egrep "^HOSTNAME=" >> /opt/terminal/etc/envvars
-    env | egrep "^OPENSHIFT_USER=" >> /opt/terminal/etc/envvars
+    env | egrep "^JUPYTERHUB_USER=" >> /opt/terminal/etc/envvars
 fi
 
 # Setup 'oc' client in advance if configured to be using local OpenShift.
 
-if [ x"$OPENSHIFT_USER" != x"" ]; then
+if [ x"$JUPYTERHUB_USER" != x"" ]; then
     oc config set-cluster local \
             --server "https://$KUBERNETES_PORT_443_TCP_ADDR" \
             --insecure-skip-tls-verify
 
-    oc config set-context me --cluster local --user "$OPENSHIFT_USER"
+    oc config set-context me --cluster local --user "$JUPYTERHUB_USER"
 
     oc config use-context me
 fi
