@@ -4,8 +4,11 @@ set -eo pipefail
 
 set -x
 
-BUTTERFLY_URL_PREFIX=${BUTTERFLY_URL_PREFIX:-}
-BUTTERFLY_SERVER_PORT=${BUTTERFLY_SERVER_PORT:-8080}
+if [ x"$JUPYTERHUB_USER" != x"" ]; then
+    URI_ROOT_PATH=/user/$JUPYTERHUB_USER
+else
+    URI_ROOT_PATH=/user/default
+fi
 
 # Now execute the program. We need to supply a startup script for the
 # shell to setup the environment.
@@ -20,7 +23,7 @@ if [ -f /opt/app-root/etc/motd ]; then
     MOTD_FILE=/opt/app-root/etc/motd
 fi
 
-exec /opt/terminal/bin/butterfly.server.py --port=$BUTTERFLY_SERVER_PORT \
-    --host=0.0.0.0 --uri-root-path="$BUTTERFLY_URL_PREFIX" --unsecure \
+exec /opt/terminal/bin/butterfly.server.py --port=8082 \
+    --host=0.0.0.0 --uri-root-path="$URI_ROOT_PATH/terminal" --unsecure \
     --i-hereby-declare-i-dont-want-any-security-whatsoever \
     --shell=/opt/terminal/bin/start-terminal.sh --motd=$MOTD_FILE

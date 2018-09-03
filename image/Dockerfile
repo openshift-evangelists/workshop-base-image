@@ -3,7 +3,7 @@ FROM centos/s2i-base-centos7:latest
 # Install additional common utilities.
 
 RUN HOME=/root && \
-    INSTALL_PKGS="nano" && \
+    INSTALL_PKGS="nano python-devel" && \
     yum install -y centos-release-scl && \
     yum -y --setopt=tsflags=nodocs install --enablerepo=centosplus $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
@@ -40,6 +40,17 @@ RUN HOME=/opt/terminal && \
     mkdir -p /opt/app-root/etc && \
     pip install https://github.com/GrahamDumpleton/butterfly/archive/uri-root-path.zip && \
     rm /opt/app-root/etc/scl_enable
+
+RUN HOME=/opt/terminal && \
+    cd /opt/terminal && \
+    source scl_source enable rh-nodejs8 && \
+    npm install http-proxy
+
+COPY workshop /opt/terminal/workshop
+
+RUN HOME=/opt/terminal && \
+    source /opt/terminal/bin/activate && \
+    pip install Flask==1.0.2 Flask-Misaka
 
 ENV BASH_ENV=/opt/terminal/etc/profile \
     ENV=/opt/terminal/etc/profile \
