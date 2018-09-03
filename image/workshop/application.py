@@ -13,6 +13,10 @@ uri_root_path = os.environ['URI_ROOT_PATH']
 
 @app.route('/')
 def home():
+    return redirect(url_for('user_home'))
+
+@app.route(uri_root_path + '/')
+def user_home():
     return redirect(url_for('terminal_home'))
 
 @app.route(uri_root_path + '/terminal/')
