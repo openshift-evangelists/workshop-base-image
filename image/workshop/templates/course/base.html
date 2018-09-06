@@ -13,6 +13,15 @@
         {% endblock %}
     </head>
     <body>
+        <script>
+            function handle_command_execute(element) {
+                parent.send_to_terminal(element.previousElementSibling.innerHTML);
+            }
+        </script>
+        {% macro execute() %}
+        <button onclick="handle_command_execute(this)">Execute</button>
+        {% endmacro %}
+
         {% if not embedded %}
         <div class="page-header">
             <h1><a href="{{ url_for('home') }}">OpenShift Workshop</a></h1>

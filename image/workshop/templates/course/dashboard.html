@@ -105,4 +105,12 @@ require(['split'], function(split) {
 });
 </script>
 
+    <script>
+	function xsend_to_terminal(value) {
+	    var right_iframe = document.getElementById("right-iframe");
+            right_iframe.contentWindow.butterfly.send(value);
+            console.log('SEND ' + value)
+	}
+    </script>
+
 </body>

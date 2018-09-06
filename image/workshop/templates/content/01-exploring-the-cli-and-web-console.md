@@ -15,9 +15,9 @@ password combination for your user account:
 
 When prompted, enter the following username and password:
 
-**Username:** ``developer``{{execute}}
+**Username:** ``developer``{{ execute() }}
 
-**Password:** ``developer``{{execute}}
+**Password:** ``developer``{{ execute() }}
 
 Once you have authenticated to the OpenShift server, you will see the
 following confirmation message:
