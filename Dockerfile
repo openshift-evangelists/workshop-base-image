@@ -72,7 +72,7 @@ RUN touch /opt/workshop/etc/envvars && \
     chown -R 1001:0 /opt/workshop/etc/envvars && \
     chmod g+w /opt/workshop/etc/envvars
 
-RUN mkdir -p /opt/app-root/workshop && \
+RUN mkdir -p /opt/app-root/courses && \
     mkdir -p /opt/app-root/etc/init.d && \
     mkdir -p /opt/app-root/etc/profile.d && \
     chown -R 1001:0 /opt/app-root && \

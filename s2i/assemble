@@ -2,14 +2,28 @@
 
 set -x
 
-# Copy files to working directory.
+set -eo pipefail
+
+# Copy files to target directories.
 
 shopt -u dotglob
 
-cp -rf /tmp/src/* .
+if [ -f /tmp/src/courses ]; then
+    mv /tmp/src/courses/* /opt/app-root/courses/
+fi
+
+if [ -f /tmp/src/workspace ]; then
+    mv /tmp/src/workspace/* .
+fi
 
 rm -rf /tmp/src
 
-# Fix up permissions in application area.
+# Run custom assemble script if required.
+
+if [ -x ./assemble ]; then
+    ./assemble
+fi
+
+# Fix up permissions.
 
 fix-permissions /opt/app-root
