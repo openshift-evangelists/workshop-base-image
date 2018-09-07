@@ -90,3 +90,7 @@ def image_file(image):
 @app.route(uri_root_path + '/static/<path:filename>')
 def static_file(filename):
     return send_from_directory(os.path.dirname(__file__)+'/static', filename)
+
+if __name__ == '__main__':
+    from waitress import serve
+    serve(app, host='0.0.0.0', port=8081)

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -a
-. /opt/terminal/etc/envvars
+. /opt/workshop/etc/envvars
 set +a
 
 export SHELL=/bin/bash

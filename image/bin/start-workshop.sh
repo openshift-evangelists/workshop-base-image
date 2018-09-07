@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /opt/terminal/bin/activate
+source /opt/workshop/bin/activate
 
 if [ x"$JUPYTERHUB_USER" != x"" ]; then
     URI_ROOT_PATH=/user/$JUPYTERHUB_USER
@@ -10,6 +10,6 @@ fi
 
 export URI_ROOT_PATH
 
-export FLASK_APP=/opt/terminal/workshop/application.py
+cd /opt/workshop
 
-exec flask run --port 8081
+exec python /opt/workshop/app.py

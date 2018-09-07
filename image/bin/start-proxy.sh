@@ -12,6 +12,6 @@ fi
 
 export URI_ROOT_PATH
 
-cd /opt/terminal
+cd /opt/workshop
 
-exec node /opt/terminal/etc/proxy.js
+exec node /opt/workshop/proxy.js

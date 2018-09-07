@@ -2,7 +2,7 @@ unset BASH_ENV PROMPT_COMMAND ENV
 
 # Read in additional application profile files.
 
-for i in /opt/terminal/etc/profile.d/*.sh /opt/terminal/etc/profile.d/sh.local; do
+for i in /opt/workshop/etc/profile.d/*.sh /opt/workshop/etc/profile.d/sh.local; do
     if [ -r "$i" ]; then
 	. "$i" >/dev/null
     fi

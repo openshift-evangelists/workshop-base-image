@@ -15,12 +15,12 @@ fi
 
 # Preserve select environment variables so can set in terminal session.
 
-if [ ! -s /opt/terminal/etc/envvars ]; then
-    env | egrep "^PATH=" >> /opt/terminal/etc/envvars
-    env | egrep "^LD_LIBRARY_PATH=" >> /opt/terminal/etc/envvars
-    env | egrep "^KUBERNETES_" >> /opt/terminal/etc/envvars
-    env | egrep "^HOSTNAME=" >> /opt/terminal/etc/envvars
-    env | egrep "^JUPYTERHUB_USER=" >> /opt/terminal/etc/envvars
+if [ ! -s /opt/workshop/etc/envvars ]; then
+    env | egrep "^PATH=" >> /opt/workshop/etc/envvars
+    env | egrep "^LD_LIBRARY_PATH=" >> /opt/workshop/etc/envvars
+    env | egrep "^KUBERNETES_" >> /opt/workshop/etc/envvars
+    env | egrep "^HOSTNAME=" >> /opt/workshop/etc/envvars
+    env | egrep "^JUPYTERHUB_USER=" >> /opt/workshop/etc/envvars
 fi
 
 # Setup 'oc' client in advance if configured to be using local OpenShift.
@@ -48,5 +48,5 @@ fi
 
 # Run supervisord.
 
-exec /opt/terminal/bin/supervisord --nodaemon \
-    --configuration /opt/terminal/etc/supervisord.conf
+exec /opt/workshop/bin/supervisord --nodaemon \
+    --configuration /opt/workshop/etc/supervisord.conf

@@ -28,45 +28,49 @@ ENV PYTHONUNBUFFERED=1 \
 
 # Install Supervisor and Butterfly using system Python 2.7.
 
-RUN HOME=/opt/terminal && \
-    mkdir -p /opt/terminal && \
+RUN HOME=/opt/workshop && \
+    mkdir -p /opt/workshop && \
     curl -s -o /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py && \
     /usr/bin/python /tmp/get-pip.py --user && \
     rm -f /tmp/get-pip.py && \
     $HOME/.local/bin/pip install --no-cache-dir --user virtualenv && \
-    $HOME/.local/bin/virtualenv /opt/terminal && \
-    source /opt/terminal/bin/activate && \
+    $HOME/.local/bin/virtualenv /opt/workshop && \
+    source /opt/workshop/bin/activate && \
     pip install supervisor==3.3.4 && \
     mkdir -p /opt/app-root/etc && \
     pip install https://github.com/GrahamDumpleton/butterfly/archive/uri-root-path.zip && \
     rm /opt/app-root/etc/scl_enable
 
-RUN HOME=/opt/terminal && \
-    cd /opt/terminal && \
+RUN HOME=/opt/workshop && \
+    cd /opt/workshop && \
     source scl_source enable rh-nodejs8 && \
     npm install http-proxy
 
-COPY workshop /opt/terminal/workshop
+RUN HOME=/opt/workshop && \
+    source /opt/workshop/bin/activate && \
+    pip install Flask==1.0.2 Flask-Misaka==0.4.1 waitress==1.1.0
 
-RUN HOME=/opt/terminal && \
-    source /opt/terminal/bin/activate && \
-    pip install Flask==1.0.2 Flask-Misaka
+ENV BASH_ENV=/opt/workshop/etc/profile \
+    ENV=/opt/workshop/etc/profile \
+    PROMPT_COMMAND=". /opt/workshop/etc/profile"
 
-ENV BASH_ENV=/opt/terminal/etc/profile \
-    ENV=/opt/terminal/etc/profile \
-    PROMPT_COMMAND=". /opt/terminal/etc/profile"
+COPY s2i/. /usr/libexec/s2i/
 
-COPY scripts/. /opt/terminal/bin/
-COPY configs/. /opt/terminal/etc/
+COPY bin/. /opt/workshop/bin/
+COPY etc/. /opt/workshop/etc/
 
-COPY builder/. /usr/libexec/s2i/
+COPY static/. /opt/workshop/static/
+COPY templates/. /opt/workshop/templates/
+
+COPY proxy.js /opt/workshop/
+COPY app.py /opt/workshop/
 
 RUN echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
     chmod g+w /etc/passwd
 
-RUN touch /opt/terminal/etc/envvars && \
-    chown -R 1001:0 /opt/terminal/etc/envvars && \
-    chmod g+w /opt/terminal/etc/envvars
+RUN touch /opt/workshop/etc/envvars && \
+    chown -R 1001:0 /opt/workshop/etc/envvars && \
+    chmod g+w /opt/workshop/etc/envvars
 
 RUN mkdir -p /opt/app-root/etc/init.d && \
     mkdir -p /opt/app-root/etc/profile.d && \
