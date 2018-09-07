@@ -62,11 +62,11 @@ Enter `python` into the _Filter by name or description_ text entry box.
 
 Click on _Select_ for the Python builder to begin the process of creating the application. On the next page, for the _Name_, enter:
 
-``nationalparks-py``{{ copy_to_clipboard() }}
+``nationalparks-py``{{copy}}
 
 For the _Git Repository URL_, enter:
 
-``https://github.com/openshift-roadshow/nationalparks-py``{{ copy_to_clipboard() }}
+``https://github.com/openshift-roadshow/nationalparks-py``{{copy}}
 
 The page should look like:
 
@@ -79,7 +79,7 @@ overview_. You will be able to see the build logs in the _Overview_ page once th
 
 From the command line, you can also see the *Builds*:
 
-``oc get builds``{{ execute_in_terminal() }}
+``oc get builds``{{execute}}
 
 You'll see output like:
 
@@ -90,7 +90,7 @@ nationalparks-py-1   Source    Git@9368a76   Running   30 seconds ago
 
 You can also view the build logs with the following command:
 
-``oc logs -f builds/nationalparks-py-1 --follow``{{ execute_in_terminal() }}
+``oc logs -f builds/nationalparks-py-1 --follow``{{execute}}
 
 The ``--follow`` option will result in the build log being tailed until the build has completed.
 
@@ -104,7 +104,7 @@ After the build has completed successfully:
 
 If you run:
 
-``oc get pods``{{ execute_in_terminal() }}
+``oc get pods``{{execute}}
 
 you will see that the build Pod
 has finished (exited) and that an application *Pod* is in a ready and running state:
@@ -119,7 +119,7 @@ If you look again at the web console, you will notice that, when you create the
 application this way, OpenShift also creates a *Route* for you. You can see the
 URL in the web console. On the command line you can view the hostname assigned to the application by running:
 
-``oc get routes``{{ execute_in_terminal() }}
+``oc get routes``{{execute}}
 
 The output should be similar to:
 
@@ -155,12 +155,12 @@ But we don't have a database. Yet.
 
 The "catch-up" commands for these exercises are as follows.
 
-``oc new-app --name nationalparks-py python:3.5~https://github.com/openshift-roadshow/nationalparks-py``{{ execute_in_terminal() }}
+``oc new-app --name nationalparks-py python:3.5~https://github.com/openshift-roadshow/nationalparks-py``{{execute}}
 
-``oc logs bc/nationalparks-py --follow``{{ execute_in_terminal() }}
+``oc logs bc/nationalparks-py --follow``{{execute}}
 
-``oc rollout status dc/nationalparks-py``{{ execute_in_terminal() }}
+``oc rollout status dc/nationalparks-py``{{execute}}
 
-``oc expose service/nationalparks-py``{{ execute_in_terminal() }}
+``oc expose service/nationalparks-py``{{execute}}
 
 ONLY run the "catch-up" commands if you had not already done a set of exercises.

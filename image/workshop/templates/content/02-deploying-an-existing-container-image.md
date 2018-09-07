@@ -15,7 +15,7 @@ Return to the project overview page for the `myproject` project. Next, click the
 You will learn more about image streams and image stream tags later. For now,
 select the _Image Name_ option, and copy/paste the following into the text entry field for _image name or pull spec_:
 
-``docker.io/openshiftroadshow/parksmap-py:1.0.0``{{ copy_to_clipboard() }}
+``docker.io/openshiftroadshow/parksmap-py:1.0.0``{{copy}}
 
 Press *enter* or click on the magnifying glass icon. OpenShift will query the ``docker.io`` image registry and pull down details about the image and display it.
 
@@ -60,7 +60,7 @@ is the `parksmap-py` application.
 
 You can also examine *Pods* from the command line:
 
-``oc get pods``{{ execute_in_terminal() }}
+``oc get pods``{{execute}}
 
 You should see output that looks similar to:
 
@@ -73,7 +73,7 @@ The above output lists all of the *Pods* in the current *Project*, including the
 *Pod* name, state, restarts, and uptime. To see more information about *Pods*, you can set the output type to *YAML* using the
 `-o yaml` option.
 
-``oc get pods -o yaml``{{ execute_in_terminal() }}
+``oc get pods -o yaml``{{execute}}
 
 This will output a list with the details of all *Pods*. If you want to restrict the output to a single *Pod* pass the name of the *Pod* as argument to the ``oc get pod`` command.
 
@@ -135,7 +135,7 @@ Now that you understand the basics of what a *Service* is, let's take a look at
 the *Service* that was created for the image that you just deployed.  In order to
 view the *Services* defined in your *Project*, enter in the following command:
 
-``oc get services``{{ execute_in_terminal() }}
+``oc get services``{{execute}}
 
 You should see output similar to the following:
 
@@ -155,7 +155,7 @@ and then clicking _Services_.
 You can also get more detailed information about a *Service* by using the
 following command to display the data as YAML:
 
-``oc get service parksmap-py -o yaml``{{ execute_in_terminal() }}
+``oc get service parksmap-py -o yaml``{{execute}}
 
 You should see output similar to the following:
 
@@ -197,7 +197,7 @@ selector:
 
 Run again the command:
 
-``oc get pods -o yaml``{{ execute_in_terminal() }}
+``oc get pods -o yaml``{{execute}}
 
 Under the `metadata` section you should see the following:
 
@@ -222,7 +222,7 @@ The *Pod* has multiple *Labels*:
 matches the *Selector* will be associated with the *Service*. To see this in
 action, issue the following command:
 
-``oc describe service parksmap-py``{{ execute_in_terminal() }}
+``oc describe service parksmap-py``{{execute}}
 
 You should see something like the following output:
 
@@ -249,8 +249,8 @@ associated with the *Service*.
 
 The "catch-up" commands for these exercises are as follows.
 
-``oc new-app --name parksmap-py openshiftroadshow/parksmap-py:1.0.0``{{ execute_in_terminal() }}
+``oc new-app --name parksmap-py openshiftroadshow/parksmap-py:1.0.0``{{execute}}
 
-``oc rollout status dc/parksmap-py``{{ execute_in_terminal() }}
+``oc rollout status dc/parksmap-py``{{execute}}
 
 ONLY run the "catch-up" commands if you had not already done a set of exercises.

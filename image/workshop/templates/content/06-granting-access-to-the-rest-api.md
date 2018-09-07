@@ -18,7 +18,7 @@ account, we can do interesting things.
 
 To view the current role bindings for your project run:
 
-``oc get rolebindings``{{ execute_in_terminal() }}
+``oc get rolebindings``{{execute}}
 
 This should display:
 
@@ -38,7 +38,7 @@ The ParksMap application front end wants to talk to the OpenShift API to learn a
 
 To grant the ParksMap application access to the REST API, run:
 
-``oc policy add-role-to-user view -z default``{{ execute_in_terminal() }}
+``oc policy add-role-to-user view -z default``{{execute}}
 
 The `oc policy` command above is giving a defined _role_ (`view`) to a user. But
 we are using a special flag, `-z`. What does this flag do? From the `--help` output:
@@ -53,7 +53,7 @@ entire string, which, in this case, is
 
 You can verify that the role has been added correctly by running:
 
-``oc get rolebindings``{{ execute_in_terminal() }}
+``oc get rolebindings``{{execute}}
 
 This should now output:
 
@@ -95,6 +95,6 @@ for the application now, you should see no errors.  That's great.
 
 The "catch-up" commands for these exercises are as follows.
 
-``oc policy add-role-to-user view -z default``{{ execute_in_terminal() }}
+``oc policy add-role-to-user view -z default``{{execute}}
 
 ONLY run the "catch-up" commands if you had not already done a set of exercises.

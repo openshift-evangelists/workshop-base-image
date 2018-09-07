@@ -76,9 +76,12 @@ def module_file(module):
 
     embedded = request.args.get('embedded')
 
+    execute = '<button onclick="handle_command_execute(this)">Execute</button>'
+    copy = '<button onclick="handle_text_copy(this)">Copy</button>'
+
     return render_template("course/module-file.html",
             module=course_modules[stub], filename=filename,
-            embedded=embedded)
+            embedded=embedded, execute=execute, copy=copy)
 
 @app.route(uri_root_path + '/workshop/images/<image>')
 def image_file(image):

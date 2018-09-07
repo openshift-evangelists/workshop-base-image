@@ -6,7 +6,7 @@ To access OpenShift from the command line you need the `oc` command line tool. I
 
 In order to login, run the following command:
 
-``oc login``{{ execute_in_terminal() }}
+``oc login``{{execute}}
 
 In this interactive learning environment, whenever you see a command like that above which displays a carriage return icon to the right of the command, you can click on the command and it will be run for you in the _Terminal_ window automatically. You can at any time also enter any command yourself direct into the terminal window.
 
@@ -15,9 +15,9 @@ password combination for your user account:
 
 When prompted, enter the following username and password:
 
-**Username:** ``developer``{{ execute_in_terminal() }}
+**Username:** ``developer``{{execute}}
 
-**Password:** ``developer``{{ execute_in_terminal() }}
+**Password:** ``developer``{{execute}}
 
 Once you have authenticated to the OpenShift server, you will see the
 following confirmation message:
@@ -46,7 +46,7 @@ application services and endpoints you (or your teams) are using for your work.
 
 The first thing we want to do is create the project to work in. Create the `myproject` project by running:
 
-``oc new-project myproject``{{ execute_in_terminal() }}
+``oc new-project myproject``{{execute}}
 
 You will see the following confirmation message:
 
@@ -77,9 +77,9 @@ The first screen you will see in the web console is the authentication screen.
 
 Enter in the following credentials:
 
-**Username:** ``developer``{{ copy_to_clipboard() }}
+**Username:** ``developer``{{copy}}
 
-**Password:** ``developer``{{ copy_to_clipboard() }}
+**Password:** ``developer``{{copy}}
 
 and click on _Log In_.
 
@@ -109,8 +109,8 @@ To cater for this eventuality, you will find a "catch-up" section at the end of 
 
 The "catch-up" commands for this initial set of exercises are below.
 
-``oc login --username developer --password developer``{{ execute_in_terminal() }}
+``oc login --username developer --password developer``{{execute}}
 
-``oc new-project myproject``{{ execute_in_terminal() }}
+``oc new-project myproject``{{execute}}
 
 ONLY run the "catch-up" commands if you had not already done a set of exercises.

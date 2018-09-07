@@ -36,7 +36,7 @@ In addition to using the web console to view logs you can use the command line. 
 
 To get a list of the _Pods_ run:
 
-``oc get pods``{{ execute_in_terminal() }}
+``oc get pods``{{execute}}
 
 You should see output similar to:
 
@@ -47,7 +47,7 @@ parksmap-py-1-m7q7l   1/1       Running   0          12m
 
 To see the logs for a specific _Pod_, run ``oc logs``, passing the name of the _Pod_ as argument. As the names of the _Pods_ change, for this exercise, to provide a command you can click on we use ``oc get pods -o name | head -1`` to get the name of the _Pod_.
 
-``oc logs `oc get pods -o name | head -1` --timestamps``{{ execute_in_terminal() }}
+``oc logs `oc get pods -o name | head -1` --timestamps``{{execute}}
 
 The ``--timestamps`` option has also been added to the ``oc logs`` command so that the date and time of when a message was output is displayed. This is useful if the application logging itself doesn't include a date and time in the log message.
 

@@ -28,9 +28,6 @@
 		document.body.removeChild(input)
             }
         </script>
-        {% macro execute_in_terminal() %}
-        <button onclick="handle_command_execute(this)">Execute</button>
-        {% endmacro %}
 
         {% macro copy_to_clipboard() %}
         <button onclick="handle_text_copy(this)">Copy</button>
