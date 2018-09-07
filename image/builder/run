@@ -25,14 +25,19 @@ fi
 
 # Setup 'oc' client in advance if configured to be using local OpenShift.
 
-if [ x"$JUPYTERHUB_USER" != x"" ]; then
+if [ x"$KUBERNETES_PORT_443_TCP_ADDR" != x"" ]; then
     oc config set-cluster local \
             --server "https://$KUBERNETES_PORT_443_TCP_ADDR" \
             --insecure-skip-tls-verify
 
-    oc config set-context me --cluster local --user "$JUPYTERHUB_USER"
+    oc config set-context local --cluster local
+    oc config use-context local
 
-    oc config use-context me
+    if [ -f /var/run/secrets/kubernetes.io/serviceaccount/token ]; then
+        oc login --token \
+            `cat /var/run/secrets/kubernetes.io/serviceaccount/token` \
+            --insecure-skip-tls-verify > /dev/null 2>&1
+    fi
 fi
 
 # Run startup actions if supplied.
