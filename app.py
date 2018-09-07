@@ -9,18 +9,20 @@ from flask_misaka import Misaka
 app = Flask(__name__)
 mikasa = Misaka(app, fenced_code=True)
 
-uri_root_path = os.environ['URI_ROOT_PATH']
+uri_root_path = os.environ.get('URI_ROOT_PATH', '')
+default_page = os.environ.get('DEFAULT_PAGE', 'dashboard')
 
-@app.route('/')
-def home():
-    return redirect(url_for('user_home'))
+if uri_root_path:
+    @app.route('/')
+    def root():
+        return redirect(url_for('home'))
 
 @app.route(uri_root_path + '/')
-def user_home():
-    return redirect(url_for('terminal_home'))
+def home():
+    return redirect(url_for(default_page))
 
 @app.route(uri_root_path + '/terminal/')
-def terminal_home():
+def terminal():
     return 'whoops, how did I get here'
 
 course_directory = os.path.join(os.path.dirname(__file__),
@@ -56,14 +58,14 @@ def dashboard():
     return render_template("course/dashboard.html", course=course)
 
 @app.route(uri_root_path + '/workshop/')
-def modules_list():
+def workshop():
     embedded = request.args.get('embedded')
 
     return render_template("course/modules-list.html", course=course,
             embedded=embedded)
 
 @app.route(uri_root_path + '/workshop/<module>')
-def module_file(module):
+def workshop_module(module):
     if not course:
         abort(404)
 

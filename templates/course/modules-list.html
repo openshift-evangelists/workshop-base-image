@@ -5,9 +5,9 @@
 <ul>
     {% for module in course.modules %}
     {% if not embedded %}
-    <li><a href="{{ url_for('module_file', module=module.file) }}.html">{{ module.name }}</a></li>
+    <li><a href="{{ url_for('workshop_module', module=module.file) }}.html">{{ module.name }}</a></li>
     {% else %}
-    <li><a href="{{ url_for('module_file', module=module.file)}}.html?embedded=1">{{ module.name }}</a></li>
+    <li><a href="{{ url_for('workshop_module', module=module.file)}}.html?embedded=1">{{ module.name }}</a></li>
     {% endif %}
     {% endfor %}
 </ul>

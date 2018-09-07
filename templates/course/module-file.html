@@ -18,15 +18,15 @@ img {
 <div>
     {% if module.next %}
         {% if not embedded %}
-        <li><a href="{{ url_for('module_file', module=module.next) }}.html">Next</a></li>
+        <li><a href="{{ url_for('workshop_module', module=module.next) }}.html">Next</a></li>
         {% else %}
-        <li><a href="{{ url_for('module_file', module=module.next)}}.html?embedded=1">Next</a></li>
+        <li><a href="{{ url_for('workshop_module', module=module.next)}}.html?embedded=1">Next</a></li>
         {% endif %}
     {% else %}
         {% if not embedded %}
-        <a href="{{ url_for('modules_list') }}">Up</a>
+        <a href="{{ url_for('workshop') }}">Up</a>
         {% else %}
-        <a href="{{ url_for('modules_list') }}?embedded=1">Up</a>
+        <a href="{{ url_for('workshop') }}?embedded=1">Up</a>
         {% endif %}
     {% endif %}
 
