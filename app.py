@@ -65,7 +65,7 @@ def dashboard():
 def workshop():
     embedded = request.args.get('embedded')
 
-    return render_template("modules-list.html", course=course,
+    return render_template("course.html", course=course,
             embedded=embedded)
 
 @app.route(uri_root_path + '/workshop/<module>')
@@ -83,7 +83,7 @@ def workshop_module(module):
     execute = '<button onclick="handle_command_execute(this)">Execute</button>'
     copy = '<button onclick="handle_text_copy(this)">Copy</button>'
 
-    return render_template("module-file.html",
+    return render_template("step.html",
             module=course_modules[module], filename=filename,
             embedded=embedded, execute=execute, copy=copy)
 
