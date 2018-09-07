@@ -14,7 +14,10 @@ from courses import load_workshop, COURSES_DIRECTORY
 
 # Create Flask application.
 
-app = Flask(__name__)
+uri_root_path = os.environ.get('URI_ROOT_PATH', '')
+static_url_path = uri_root_path + '/static'
+
+app = Flask(__name__, static_url_path=static_url_path)
 
 template_loader = FileSystemLoader([
         os.path.join(os.path.dirname(__file__), 'templates'),
@@ -36,7 +39,6 @@ print(workshop_details)
 
 # Set up request handlers.
 
-uri_root_path = os.environ.get('URI_ROOT_PATH', '')
 default_page = os.environ.get('DEFAULT_PAGE', 'dashboard')
 
 if uri_root_path:
