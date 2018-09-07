@@ -9,22 +9,6 @@ from flask_misaka import Misaka
 app = Flask(__name__)
 mikasa = Misaka(app, fenced_code=True)
 
-uri_root_path = os.environ.get('URI_ROOT_PATH', '')
-default_page = os.environ.get('DEFAULT_PAGE', 'dashboard')
-
-if uri_root_path:
-    @app.route('/')
-    def root():
-        return redirect(url_for('home'))
-
-@app.route(uri_root_path + '/')
-def home():
-    return redirect(url_for(default_page))
-
-@app.route(uri_root_path + '/terminal/')
-def terminal():
-    return 'whoops, how did I get here'
-
 course_directory = os.path.join(os.path.dirname(__file__),
         'templates', 'content')
 course_index_file = os.path.join(course_directory, 'index.json')
@@ -52,6 +36,25 @@ for current in course['modules']:
 
 if current:
     current['next'] = None
+
+uri_root_path = os.environ.get('URI_ROOT_PATH', '')
+default_page = os.environ.get('DEFAULT_PAGE', 'dashboard')
+
+if uri_root_path:
+    @app.route('/')
+    def root():
+        return redirect(url_for('home'))
+
+@app.route(uri_root_path + '/')
+def home():
+    if default_page == 'dashboard' and not course:
+        return redirect(url_for('terminal'))
+
+    return redirect(url_for(default_page))
+
+@app.route(uri_root_path + '/terminal/')
+def terminal():
+    return 'whoops, how did I get here'
 
 @app.route(uri_root_path + '/dashboard/')
 def dashboard():
