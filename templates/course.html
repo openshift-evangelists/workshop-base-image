@@ -16,9 +16,9 @@
         <div></div>
         {% if workshop.courses|length > 1 %}
             {% if not embedded %}
-                <li><a href="{{ url_for('workshop') }}">Up</a></li>
+                <a href="{{ url_for('workshop') }}">Up</a>
             {% else %}
-                <li><a href="{{ url_for('workshop', embedded=1)}}">Up</a></li>
+                <a href="{{ url_for('workshop', embedded=1)}}">Up</a>
             {% endif %}
         {% endif %}
     {% else %}

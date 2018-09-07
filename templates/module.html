@@ -18,9 +18,9 @@ img {
 <div>
     {% if module.next %}
         {% if not embedded %}
-            <li><a href="{{ url_for('module', name=course.name, path=module.next) }}">Next</a></li>
+            <a href="{{ url_for('module', name=course.name, path=module.next) }}">Next</a>
         {% else %}
-            <li><a href="{{ url_for('module', name=course.name, path=module.next, embedded=1)}}">Next</a></li>
+            <a href="{{ url_for('module', name=course.name, path=module.next, embedded=1)}}">Next</a>
         {% endif %}
     {% else %}
         {% if not embedded %}
