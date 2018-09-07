@@ -14,11 +14,11 @@
     </head>
     <body>
         <script>
-            function handle_command_execute(element) {
+            function handle_execute(element) {
                 parent.send_to_terminal(element.previousElementSibling.innerHTML);
             }
 
-            function handle_text_copy(element) {
+            function handle_copy(element) {
                 var value = element.previousElementSibling.innerHTML;
 		var input = document.createElement('input');
 		input.setAttribute('value', value);
@@ -28,10 +28,6 @@
 		document.body.removeChild(input)
             }
         </script>
-
-        {% macro copy_to_clipboard() %}
-        <button onclick="handle_text_copy(this)">Copy</button>
-        {% endmacro %}
 
         {% if not embedded %}
         <div class="page-header">
