@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ course.title }}</h1>
+<ul>
+    {% if course %}
+        {% for module in course.details.steps %}
+        {% if not embedded %}
+        <li><a href="{{ url_for('workshop_module', module=module.path) }}">{{ module.title }}</a></li>
+        {% else %}
+        <li><a href="{{ url_for('workshop_module', module=module.path)}}?embedded=1">{{ module.title }}</a></li>
+        {% endif %}
+        {% endfor %}
+    {% else %}
+    <p>No course found!!!</p>
+    {% endif %}
+</ul>
+{% endblock %}
