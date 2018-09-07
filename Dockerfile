@@ -63,7 +63,7 @@ COPY static/. /opt/workshop/static/
 COPY templates/. /opt/workshop/templates/
 
 COPY proxy.js /opt/workshop/
-COPY app.py /opt/workshop/
+COPY app.py courses.py /opt/workshop/
 
 RUN echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
     chmod g+w /etc/passwd

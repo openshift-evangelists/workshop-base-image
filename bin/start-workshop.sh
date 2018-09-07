@@ -12,4 +12,6 @@ export URI_ROOT_PATH
 
 cd /opt/workshop
 
+export PYTHONPATH=/opt/workshop
+
 exec python /opt/workshop/app.py

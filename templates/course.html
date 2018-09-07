@@ -4,15 +4,25 @@
 <h1>{{ course.title }}</h1>
 <ul>
     {% if course %}
-        {% for module in course.details.steps %}
-        {% if not embedded %}
-        <li><a href="{{ url_for('workshop_module', module=module.path) }}">{{ module.title }}</a></li>
-        {% else %}
-        <li><a href="{{ url_for('workshop_module', module=module.path)}}?embedded=1">{{ module.title }}</a></li>
-        {% endif %}
+        {% for name in course.modules %}
+            {% set module = course.index[name] %}
+            {% if not embedded %}
+                <li><a href="{{ url_for('module', name=course.name, path=module.path) }}">{{ module.title }}</a></li>
+            {% else %}
+                <li><a href="{{ url_for('module', name=course.name, path=module.path, embedded=1)}}">{{ module.title }}</a></li>
+            {% endif %}
         {% endfor %}
+        <div></div>
+        <div></div>
+        {% if workshop.courses|length > 1 %}
+            {% if not embedded %}
+                <li><a href="{{ url_for('workshop') }}">Up</a></li>
+            {% else %}
+                <li><a href="{{ url_for('workshop', embedded=1)}}">Up</a></li>
+            {% endif %}
+        {% endif %}
     {% else %}
-    <p>No course found!!!</p>
+        <p>No course found!!!</p>
     {% endif %}
 </ul>
 {% endblock %}
