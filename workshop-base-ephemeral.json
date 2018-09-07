@@ -2,15 +2,15 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "terminal-base-ephemeral",
+        "name": "workshop-base-ephemeral",
         "annotations": {
-            "openshift.io/display-name": "Terminal (Ephemeral/Base Image)"
+            "openshift.io/display-name": "Workshop (Base/Ephemeral)"
         }
     },
     "parameters": [
         {
             "name": "APPLICATION_NAME",
-            "value": "terminal-base-ephemeral",
+            "value": "workshop",
             "required": true
         },
         {
@@ -85,9 +85,8 @@
                 "source": {
                     "type": "Git",
                     "git": {
-                        "uri": "https://github.com/openshift-evangelists/terminal-base-image.git"
-                    },
-                    "contextDir": "image"
+                        "uri": "https://github.com/openshift-evangelists/workshop-base-image.git"
+                    }
                 },
                 "strategy": {
                     "type": "Docker",
@@ -134,7 +133,7 @@
                         "imageChangeParams": {
                             "automatic": true,
                             "containerNames": [
-                                "terminal"
+                                "workshop"
                             ],
                             "from": {
                                 "kind": "ImageStreamTag",
@@ -159,7 +158,7 @@
                         "serviceAccountName": "${APPLICATION_NAME}-role",
                         "containers": [
                             {
-                                "name": "terminal",
+                                "name": "workshop",
                                 "image": "${APPLICATION_NAME}:latest",
                                 "ports": [
                                     {
@@ -204,9 +203,6 @@
                 "name": "${APPLICATION_NAME}",
                 "labels": {
                     "app": "${APPLICATION_NAME}"
-                },
-                "annotations": {
-                    "haproxy.router.openshift.io/hsts_header": "max-age=31536000;includeSubDomains"
                 }
             },
             "spec": {
@@ -220,7 +216,8 @@
                     "targetPort": "8080-tcp"
                 },
                 "tls": {
-                    "termination": "edge"
+                    "termination": "edge",
+                    "insecureEdgeTerminationPolicy": "Redirect"
                 }
             }
         }

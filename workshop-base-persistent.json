@@ -2,15 +2,15 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "terminal-base-persistent",
+        "name": "workshop-base-persistent",
         "annotations": {
-            "openshift.io/display-name": "Terminal (Persistent/Base Image)"
+            "openshift.io/display-name": "Workshop (Base/Persistent)"
         }
     },
     "parameters": [
         {
             "name": "APPLICATION_NAME",
-            "value": "terminal-base-persistent",
+            "value": "workshop",
             "required": true
         },
         {
@@ -93,9 +93,8 @@
                 "source": {
                     "type": "Git",
                     "git": {
-                        "uri": "https://github.com/openshift-evangelists/terminal-base-image.git"
-                    },
-                    "contextDir": "image"
+                        "uri": "https://github.com/openshift-evangelists/workshop-base-image.git"
+                    }
                 },
                 "strategy": {
                     "type": "Docker",
@@ -162,7 +161,7 @@
                         "imageChangeParams": {
                             "automatic": true,
                             "containerNames": [
-                                "terminal"
+                                "workshop"
                             ],
                             "from": {
                                 "kind": "ImageStreamTag",
@@ -189,7 +188,7 @@
 			    {
 				"name": "setup-volume",
 				"command": [
-				    "/opt/terminal/bin/setup-volume.sh",
+				    "/opt/workshop/bin/setup-volume.sh",
 				    "/opt/app-root",
 				    "/mnt/workspace"
 				],
@@ -204,7 +203,7 @@
 			],
                         "containers": [
                             {
-                                "name": "terminal",
+                                "name": "workshop",
                                 "image": "${APPLICATION_NAME}:latest",
                                 "ports": [
                                     {
@@ -264,9 +263,6 @@
                 "name": "${APPLICATION_NAME}",
                 "labels": {
                     "app": "${APPLICATION_NAME}"
-                },
-                "annotations": {
-                    "haproxy.router.openshift.io/hsts_header": "max-age=31536000;includeSubDomains"
                 }
             },
             "spec": {
@@ -280,7 +276,8 @@
                     "targetPort": "8080-tcp"
                 },
                 "tls": {
-                    "termination": "edge"
+                    "termination": "edge",
+                    "insecureEdgeTerminationPolicy": "Redirect"
                 }
             }
         }
