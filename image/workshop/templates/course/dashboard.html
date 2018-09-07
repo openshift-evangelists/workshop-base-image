@@ -60,14 +60,11 @@ require.config({
     </script>
 
 <script type="text/javascript">
-document.body.style.overflow = 'hidden';
 function adjust_left_iframe_size() {
   var left_iframe = document.getElementById("left-iframe");
   var left_div = document.getElementById("left-div");
   var right_iframe = document.getElementById("right-iframe");
   var right_div = document.getElementById("right-div");
-
-  console.log(left_div);
 
   left_iframe.style.width = left_div.offsetWidth + "px";
   right_iframe.style.width = right_div.offsetWidth + "px";
@@ -106,10 +103,9 @@ require(['split'], function(split) {
 </script>
 
     <script>
-	function xsend_to_terminal(value) {
+	function send_to_terminal(value) {
 	    var right_iframe = document.getElementById("right-iframe");
-            right_iframe.contentWindow.butterfly.send(value);
-            console.log('SEND ' + value)
+            right_iframe.contentWindow.butterfly.send(value + '\n');
 	}
     </script>
 

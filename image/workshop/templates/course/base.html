@@ -17,9 +17,23 @@
             function handle_command_execute(element) {
                 parent.send_to_terminal(element.previousElementSibling.innerHTML);
             }
+
+            function handle_text_copy(element) {
+                var value = element.previousElementSibling.innerHTML;
+		var input = document.createElement('input');
+		input.setAttribute('value', value);
+		document.body.appendChild(input);
+		input.select();
+		document.execCommand('copy');
+		document.body.removeChild(input)
+            }
         </script>
-        {% macro execute() %}
+        {% macro execute_in_terminal() %}
         <button onclick="handle_command_execute(this)">Execute</button>
+        {% endmacro %}
+
+        {% macro copy_to_clipboard() %}
+        <button onclick="handle_text_copy(this)">Copy</button>
         {% endmacro %}
 
         {% if not embedded %}

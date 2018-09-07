@@ -12,7 +12,7 @@ The ParksMaps application uses the REST API to get information about labels, but
 
 To see the current set of labels defined for ``nationalparks-py`` run:
 
-``oc describe route/nationalparks-py``{{execute}}
+``oc describe route/nationalparks-py``{{ execute_in_terminal() }}
 
 This should produce output similar to:
 
@@ -39,11 +39,11 @@ You can see that at present it only has one label: `app=nationalparks`.
 
 To add the required label of `type=parksmap-backend`, run ``oc label``:
 
-``oc label route/nationalparks-py type=parksmap-backend``{{execute}}
+``oc label route/nationalparks-py type=parksmap-backend``{{ execute_in_terminal() }}
 
 Run:
 
-``oc describe route/nationalparks-py``{{execute}}
+``oc describe route/nationalparks-py``{{ execute_in_terminal() }}
 
 again to verify the label has been applied.
 
@@ -61,6 +61,6 @@ That's really cool!
 
 The "catch-up" commands for these exercises are as follows.
 
-``oc label route/nationalparks-py type=parksmap-backend``{{execute}}
+``oc label route/nationalparks-py type=parksmap-backend``{{ execute_in_terminal() }}
 
 ONLY run the "catch-up" commands if you had not already done a set of exercises.

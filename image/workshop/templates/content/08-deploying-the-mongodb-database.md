@@ -43,11 +43,11 @@ Select the _MongoDB (Persistent)_ template.
 
 You will be presented with the template parameters you can set. Set the following parameters, with the value of ``mongodb`` for all.
 
-* _Database Service Name_ : ``mongodb``{{copy}}
-* _MongoDB Connection Username_ : ``mongodb``{{copy}}
-* _MongoDB Connection Password_ : ``mongodb``{{copy}}
-* _MongoDB Database Name_: ``mongodb``{{copy}}
-* _MongoDB Admin Password_ : ``mongodb``{{copy}}
+* _Database Service Name_ : ``mongodb``{{ copy_to_clipboard() }}
+* _MongoDB Connection Username_ : ``mongodb``{{ copy_to_clipboard() }}
+* _MongoDB Connection Password_ : ``mongodb``{{ copy_to_clipboard() }}
+* _MongoDB Database Name_: ``mongodb``{{ copy_to_clipboard() }}
+* _MongoDB Admin Password_ : ``mongodb``{{ copy_to_clipboard() }}
 
 Do not leave the username and password fields empty, and ensure that the default value for the name of the database is changed from ``sampledb`` to ``mongodb``. Later steps rely on all values being ``mongodb``.
 
@@ -77,20 +77,20 @@ line.
 
 The command line takes a little less time, so let's use that option. To confirm the name of _DeploymentConfig_ run:
 
-``oc get dc``{{execute}}
+``oc get dc``{{ execute_in_terminal() }}
 
 You should have ``nationalparks-py`` listed.
 
 Then, use the `oc set env` command to set environment variables directly on the DC:
 
-``oc set env dc/nationalparks-py -e DB_USERNAME=mongodb -e DB_PASSWORD=mongodb -e DB_NAME=mongodb -e DB_HOST=mongodb``{{execute}}
+``oc set env dc/nationalparks-py -e DB_USERNAME=mongodb -e DB_PASSWORD=mongodb -e DB_NAME=mongodb -e DB_HOST=mongodb``{{ execute_in_terminal() }}
 
 The environment variables are named differently to those used in the database, but the values must match the corresponding variables for the database credentials, database and host details. If you entered the values correctly in the template parameters when deploying the Mongo database they should all be ``mongodb``.
 
 After you have modified the *DeploymentConfig* object, you can verify the
 environment variables have been added by running:
 
-``oc set env dc/nationalparks-py --list``{{execute}}
+``oc set env dc/nationalparks-py --list``{{ execute_in_terminal() }}
 
 You should see the following output:
 
@@ -110,7 +110,7 @@ warrant re-deploying the application. This was due to a configuration change tri
 
 You can verify this is what happened by running:
 
-``oc get dc``{{execute}}
+``oc get dc``{{ execute_in_terminal() }}
 
 This will output results similar to:
 
@@ -121,7 +121,7 @@ nationalparks-py   2          1         0         config,image(nationalparks-py:
 
 The revision number of the *DeploymentConfig* for ``nationalparks-py`` now shows 2. Also run:
 
-``oc get rc``{{execute}}
+``oc get rc``{{ execute_in_terminal() }}
 
 This will show that there are now two versions of the _ReplicationController_.
 
@@ -183,13 +183,13 @@ That's because the ParksMap front end application only tries to talk to backend 
 
 The "catch-up" commands for these exercises are as follows.
 
-``oc new-app --template mongodb-persistent --param DATABASE_SERVICE_NAME=mongodb --param MONGODB_USER=mongodb --param MONGODB_PASSWORD=mongodb --param MONGODB_DATABASE=mongodb --param MONGODB_ADMIN_PASSWORD=mongodb``{{execute}}
+``oc new-app --template mongodb-persistent --param DATABASE_SERVICE_NAME=mongodb --param MONGODB_USER=mongodb --param MONGODB_PASSWORD=mongodb --param MONGODB_DATABASE=mongodb --param MONGODB_ADMIN_PASSWORD=mongodb``{{ execute_in_terminal() }}
 
-``oc rollout status dc/mongodb``{{execute}}
+``oc rollout status dc/mongodb``{{ execute_in_terminal() }}
 
-``oc set env dc/nationalparks-py -e DB_USERNAME=mongodb -e DB_PASSWORD=mongodb -e DB_NAME=mongodb -e DB_HOST=mongodb``{{execute}}
+``oc set env dc/nationalparks-py -e DB_USERNAME=mongodb -e DB_PASSWORD=mongodb -e DB_NAME=mongodb -e DB_HOST=mongodb``{{ execute_in_terminal() }}
 
-``oc rollout status dc/nationalparks-py``{{execute}}
+``oc rollout status dc/nationalparks-py``{{ execute_in_terminal() }}
 
 Using your browser visit the URL:
 

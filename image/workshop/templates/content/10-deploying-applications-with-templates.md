@@ -36,15 +36,15 @@ You have already deployed the ParksMap front end application, the ``nationalpark
 
 To delete these, run:
 
-``oc delete all --selector app=nationalparks-py``{{execute}}
+``oc delete all --selector app=nationalparks-py``{{ execute_in_terminal() }}
 
-``oc delete all,pvc,secret --selector app=mongodb-persistent``{{execute}}
+``oc delete all,pvc,secret --selector app=mongodb-persistent``{{ execute_in_terminal() }}
 
 This will leave the ParksMap front end application still running.
 
 To verify that this is all that is running, run:
 
-``oc get all -o name``{{execute}}
+``oc get all -o name``{{ execute_in_terminal() }}
 
 ### Exercise: Instantiate a Template
 
@@ -60,7 +60,7 @@ the source code repository.
 
 To load the _Template_ execute the following command:
 
-``oc create -f https://raw.githubusercontent.com/openshift-roadshow/mlbparks-py/1.0.0/ose3/application-template.json``{{execute}}
+``oc create -f https://raw.githubusercontent.com/openshift-roadshow/mlbparks-py/1.0.0/ose3/application-template.json``{{ execute_in_terminal() }}
 
 What just happened? What did you just create? The item that we passed to the `oc create`
 command is a *Template*. The `oc create` simply makes the template available in
@@ -68,7 +68,7 @@ your *Project*.
 
 You can see what _Templates_ you have available in your project by running:
 
-``oc get templates``{{execute}}
+``oc get templates``{{ execute_in_terminal() }}
 
 You will see output like the following:
 
@@ -79,7 +79,7 @@ mlbparks-py   Application template MLB Parks backend running on Python/Flask and
 
 Are you ready for the magic command? Now run:
 
-``oc new-app mlbparks-py -p APPLICATION_NAME=mlbparks-py -p GIT_URI=https://github.com/openshift-roadshow/mlbparks-py -p GIT_REF=1.0.0``{{execute}}
+``oc new-app mlbparks-py -p APPLICATION_NAME=mlbparks-py -p GIT_URI=https://github.com/openshift-roadshow/mlbparks-py -p GIT_REF=1.0.0``{{ execute_in_terminal() }}
 
 You will see output similar to:
 
@@ -134,7 +134,7 @@ All with one command!
 
 To monitor the proress of the deployment from the command line run:
 
-``oc rollout status dc/mlbparks-py``{{execute}}
+``oc rollout status dc/mlbparks-py``{{ execute_in_terminal() }}
 
 While you wait, you can dig around in the web console to see what was created.
 
@@ -156,10 +156,10 @@ resources for our ``mlbparks-py`` application.
 
 First get the description of the template.
 
-``oc describe template/mlbparks-py``{{execute}}
+``oc describe template/mlbparks-py``{{ execute_in_terminal() }}
 
 This will display what parameters the template accepts.
 
 You can then look at the raw definition of the template by running:
 
-``oc get template mlbparks-py -o yaml``{{execute}}
+``oc get template mlbparks-py -o yaml``{{ execute_in_terminal() }}

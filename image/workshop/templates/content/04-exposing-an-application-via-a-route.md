@@ -25,7 +25,7 @@ the _Create Route_ button associated with the service.
 
 First we want to verify that we don't already have any existing routes. To list what _Routes_ already exist, run:
 
-``oc get routes``{{execute}}
+``oc get routes``{{ execute_in_terminal() }}
 
 The result should be:
 
@@ -35,7 +35,7 @@ No resources found.
 
 Next you need to get the *Service* name to expose. To list what _Services_ already exist, run:
 
-``oc get services``{{execute}}
+``oc get services``{{ execute_in_terminal() }}
 
 You should see output similar to:
 
@@ -46,11 +46,11 @@ parksmap-py  172.30.17.45   <none>        8080/TCP   7m
 
 Once you know the *Service* name, creating a *Route* is done using the ``oc expose`` command.
 
-``oc expose service/parksmap-py``{{execute}}
+``oc expose service/parksmap-py``{{ execute_in_terminal() }}
 
 Verify the *Route* was created by running ``oc get routes`` again.
 
-``oc get routes``{{execute}}
+``oc get routes``{{ execute_in_terminal() }}
 
 You should see output similar to:
 ```
@@ -75,6 +75,6 @@ web console. Visit the URL in your browser and you will see:
 
 The "catch-up" commands for these exercises are as follows.
 
-``oc expose service/parksmap-py``{{execute}}
+``oc expose service/parksmap-py``{{ execute_in_terminal() }}
 
 ONLY run the "catch-up" commands if you had not already done a set of exercises.

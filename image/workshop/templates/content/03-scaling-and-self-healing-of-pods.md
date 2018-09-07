@@ -28,7 +28,7 @@ Now that you understand what a *ReplicatonController* and
 look at the *DeploymentConfig* (DC) that was created for you when you told
 OpenShift to deploy the `parksmap-py` image. You can get a list of the *DeploymentConfig* objects in the current project by running:
 
-``oc get dc``{{execute}}
+``oc get dc``{{ execute_in_terminal() }}
 
 This should output:
 
@@ -42,7 +42,7 @@ To get more details, you can look into the *ReplicationController* (RC).
 Take a look at the *ReplicationController* (RC) that was created for you when
 you told OpenShift to deploy the `parksmap-py` image. You can get a list of the *ReplicationController* objects in the current project by running:
 
-``oc get rc``{{execute}}
+``oc get rc``{{ execute_in_terminal() }}
 
 This should output:
 
@@ -61,11 +61,11 @@ To scale the application up to 2 instances you can use
 the `oc scale` command. You could also do this by clicking the "up" arrow next to
 the *Pod* circle in the OpenShift web console on the overview page. To use the command line run:
 
-``oc scale --replicas=2 dc/parksmap-py``{{execute}}
+``oc scale --replicas=2 dc/parksmap-py``{{ execute_in_terminal() }}
 
 To verify that the number of replicas has changed, run the ``oc get rc`` command.
 
-``oc get rc``{{execute}}
+``oc get rc``{{ execute_in_terminal() }}
 
 ```
 NAME            DESIRED   CURRENT   READY     AGE
@@ -74,7 +74,7 @@ parksmap-py-1   2         2         2         3m
 
 You should see that you now have 2 replicas. Verify this by listing the *Pods*.
 
-``oc get pods``{{execute}}
+``oc get pods``{{ execute_in_terminal() }}
 
 You should see two *Pods* listed, one being the *Pod* originally created when the application was first deployed, and the other one having just been created.
 
@@ -86,7 +86,7 @@ parksmap-py-1-713cw   1/1       Running   0          4m
 
 You can also verify that the *Service* now lists the two endpoints.
 
-``oc describe service/parksmap-py``{{execute}}
+``oc describe service/parksmap-py``{{ execute_in_terminal() }}
 
 You will see something like the following output:
 
@@ -106,7 +106,7 @@ Events:                 <none>
 
 Another way to get a list of the endpoints is by running:
 
-``oc get endpoints parksmap-py``{{execute}}
+``oc get endpoints parksmap-py``{{ execute_in_terminal() }}
 
 You will see something like the following:
 
@@ -137,7 +137,7 @@ situation if it is ever not right. You would be correct!
 Since you have two *Pods* running right now, let's see what happens if you
 "accidentally" kill one. Run the following command to delete one of the *Pods* and immediately query the list of *Pods*.
 
-``oc delete `oc get pods -o name | head -1` && oc get pods``{{execute}}
+``oc delete `oc get pods -o name | head -1` && oc get pods``{{ execute_in_terminal() }}
 
 You will see output similar to:
 
@@ -172,4 +172,4 @@ it, always ensuring that the desired number of replicas was in place.
 
 Before continuing, scale down the application to a single replica.
 
-``oc scale --replicas=1 dc/parksmap-py``{{execute}}
+``oc scale --replicas=1 dc/parksmap-py``{{ execute_in_terminal() }}
