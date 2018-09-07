@@ -18,6 +18,10 @@ RUN curl -s -o /tmp/oc.tar.gz "https://mirror.openshift.com/pub/openshift-v3/cli
     curl -sL -o /usr/local/bin/odo https://github.com/redhat-developer/odo/releases/download/v0.0.10/odo-linux-amd64 && \
     chmod +x /usr/local/bin/odo
 
+ARG KUBECTL_VERSION=1.10.0
+RUN curl -sL -o /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v$KUBECTL_VERSION/bin/linux/amd64/kubectl && \
+    chmod +x /usr/local/bin/kubectl
+
 # Common environment variables.
 
 ENV PYTHONUNBUFFERED=1 \

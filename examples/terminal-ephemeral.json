@@ -22,6 +22,11 @@
             "name": "OC_VERSION",
             "value": "3.10.41",
             "required": true
+        },
+        {
+            "name": "KUBECTL_VERSION",
+            "value": "1.10.0",
+            "required": true
         }
     ],
     "objects": [
@@ -99,6 +104,10 @@
                             {
                                 "name": "OC_VERSION",
                                 "value": "${OC_VERSION}"
+                            },
+                            {
+                                "name": "KUBECTL_VERSION",
+                                "value": "${KUBECTL_VERSION}"
                             }
                         ]
                     }
