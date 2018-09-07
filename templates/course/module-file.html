@@ -9,7 +9,7 @@ img {
 }
 </style>
 
-<h1>{{ module.name }}</h1>
+<h1>{{ module.title }}</h1>
 
 {% filter markdown %}
 {% include filename %}
@@ -18,9 +18,9 @@ img {
 <div>
     {% if module.next %}
         {% if not embedded %}
-        <li><a href="{{ url_for('workshop_module', module=module.next) }}.html">Next</a></li>
+        <li><a href="{{ url_for('workshop_module', module=module.next) }}">Next</a></li>
         {% else %}
-        <li><a href="{{ url_for('workshop_module', module=module.next)}}.html?embedded=1">Next</a></li>
+        <li><a href="{{ url_for('workshop_module', module=module.next)}}?embedded=1">Next</a></li>
         {% endif %}
     {% else %}
         {% if not embedded %}

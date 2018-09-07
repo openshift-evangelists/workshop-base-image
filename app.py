@@ -24,13 +24,14 @@ course_modules = {}
 previous = None
 current = None
 
-for current in course['modules']:
-    course_modules[current['file']] = current
+for current in course['details']['steps']:
+    current['path'] = os.path.splitext(current['text'])[0] + '.html'
+    course_modules[current['path']] = current
 
-    current['previous'] = previous and previous['file']
+    current['previous'] = previous and previous['path']
 
     if previous:
-        previous['next'] = current['file']
+        previous['next'] = current['path']
 
     previous = current
 
@@ -72,12 +73,10 @@ def workshop_module(module):
     if not course:
         abort(404)
 
-    stub = os.path.splitext(module)[0]
-
-    if stub not in course_modules:
+    if module not in course_modules:
         abort(404)
 
-    filename = 'content/%s.md' % stub
+    filename = 'content/%s' % course_modules[module]['text']
 
     embedded = request.args.get('embedded')
 
@@ -85,7 +84,7 @@ def workshop_module(module):
     copy = '<button onclick="handle_text_copy(this)">Copy</button>'
 
     return render_template("course/module-file.html",
-            module=course_modules[stub], filename=filename,
+            module=course_modules[module], filename=filename,
             embedded=embedded, execute=execute, copy=copy)
 
 @app.route(uri_root_path + '/workshop/images/<image>')
