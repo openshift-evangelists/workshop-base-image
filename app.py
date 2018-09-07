@@ -9,8 +9,7 @@ from flask_misaka import Misaka
 app = Flask(__name__)
 mikasa = Misaka(app, fenced_code=True)
 
-course_directory = os.path.join(os.path.dirname(__file__),
-        'templates', 'content')
+course_directory = '/opt/app-root/workshop'
 course_index_file = os.path.join(course_directory, 'index.json')
 
 course = {}
@@ -24,19 +23,20 @@ course_modules = {}
 previous = None
 current = None
 
-for current in course['details']['steps']:
-    current['path'] = os.path.splitext(current['text'])[0] + '.html'
-    course_modules[current['path']] = current
+if course:
+    for current in course['details']['steps']:
+        current['path'] = os.path.splitext(current['text'])[0] + '.html'
+        course_modules[current['path']] = current
 
-    current['previous'] = previous and previous['path']
+        current['previous'] = previous and previous['path']
 
-    if previous:
-        previous['next'] = current['path']
+        if previous:
+            previous['next'] = current['path']
 
-    previous = current
+        previous = current
 
-if current:
-    current['next'] = None
+    if current:
+        current['next'] = None
 
 uri_root_path = os.environ.get('URI_ROOT_PATH', '')
 default_page = os.environ.get('DEFAULT_PAGE', 'dashboard')
