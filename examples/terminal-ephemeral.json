@@ -27,6 +27,14 @@
             "name": "KUBECTL_VERSION",
             "value": "1.10.0",
             "required": true
+        },
+        {
+            "name": "TERMINAL_USER",
+            "value": ""
+        },
+        {
+            "name": "TERMINAL_PASS",
+            "value": ""
         }
     ],
     "objects": [
@@ -179,6 +187,14 @@
                                     {
                                         "name": "DEFAULT_PAGE",
                                         "value": "terminal"
+                                    },
+                                    {
+                                        "name": "TERMINAL_USER",
+                                        "value": "${TERMINAL_USER}"
+                                    },
+                                    {
+                                        "name": "TERMINAL_PASS",
+                                        "value": "${TERMINAL_PASS}"
                                     }
                                 ]
                             }
