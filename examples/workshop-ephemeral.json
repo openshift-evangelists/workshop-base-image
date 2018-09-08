@@ -27,6 +27,14 @@
             "name": "KUBECTL_VERSION",
             "value": "1.10.0",
             "required": true
+        },
+        {
+            "name": "AUTH_USERNAME",
+            "value": ""
+        },
+        {
+            "name": "AUTH_PASSWORD",
+            "value": ""
         }
     ],
     "objects": [
@@ -173,6 +181,16 @@
                                     {
                                         "containerPort": 8080,
                                         "protocol": "TCP"
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "AUTH_USERNAME",
+                                        "value": "${AUTH_USERNAME}"
+                                    },
+                                    {
+                                        "name": "AUTH_PASSWORD",
+                                        "value": "${AUTH_PASSWORD}"
                                     }
                                 ]
                             }

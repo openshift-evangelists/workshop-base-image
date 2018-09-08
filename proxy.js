@@ -8,8 +8,8 @@ var terminal_app = 'http://127.0.0.1:8082';
 var terminal_top = process.env.URI_ROOT_PATH || '/user/default'
 var terminal_url = '^' + terminal_top + '/terminal/.*$';
 
-var terminal_user = process.env.TERMINAL_USER
-var terminal_pass = process.env.TERMINAL_PASS
+var auth_username = process.env.AUTH_USERNAME
+var auth_password = process.env.AUTH_PASSWORD
 
 console.log('TERMINAL_URL' + terminal_url);
 
@@ -26,7 +26,7 @@ function on_error(err, req, res) {
 var server = http.createServer(function(req, res) {
   var auth = req.headers['authorization'];
 
-  if (terminal_user) {
+  if (auth_username) {
     if (!auth) {
 	res.statusCode = 401;
 	res.setHeader('WWW-Authenticate', 'Basic realm="Terminal"');
@@ -42,7 +42,7 @@ var server = http.createServer(function(req, res) {
       var username = creds[0];
       var password = creds[1];
 
-      if ((username != terminal_user) || (password != terminal_pass)) {
+      if ((username != auth_username) || (password != auth_password)) {
 	res.statusCode = 401;
 	res.setHeader('WWW-Authenticate', 'Basic realm="Terminal"');
 
