@@ -73,11 +73,11 @@ def workshop():
 
     # If there is only one course, redirect to that course.
 
-    if len(workshop_details['courses']) == 1:
+    if workshop_details and len(workshop_details['courses']) == 1:
         name = workshop_details['courses'][0]
         return redirect(url_for('course', name=name, embedded=embedded))
 
-    return render_template("workshop.html", workshop=workshop_details,
+    return render_template("catalog.html", workshop=workshop_details,
             embedded=embedded)
 
 @app.route(uri_root_path + '/course/<name>/')

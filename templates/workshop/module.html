@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+img {
+  max-width: 100%;
+  height: auto;
+}
+</style>
+
+<h1>{{ module.title or module.text }}</h1>
+
+{% filter markdown %}
+{% include filename %}
+{% endfilter %}
+
+<div>
+    {% if module.next %}
+        {% if not embedded %}
+            <a href="{{ url_for('module', name=course.name, path=module.next) }}">Next</a>
+        {% else %}
+            <a href="{{ url_for('module', name=course.name, path=module.next, embedded=1)}}">Next</a>
+        {% endif %}
+    {% else %}
+        {% if not embedded %}
+            <a href="{{ url_for('course', name=course.name) }}">Up</a>
+        {% else %}
+            <a href="{{ url_for('course', name=course.name, embedded=1) }}">Up</a>
+        {% endif %}
+    {% endif %}
+
+</div>
+
+{% endblock %}

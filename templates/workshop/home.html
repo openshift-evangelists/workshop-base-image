@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>{{ workshop.title or 'Workshop' }}</title>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <style>
+    html, body {
+    height: 99%;
+  }
+  body {
+    padding: 8px;
+    background-color: #F6F6F6;
+    box-sizing: border-box;
+  }
+  .split {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .content {
+    border: 1px solid #C0C0C0;
+    box-shadow: inset 0 1px 2px #e4e4e4;
+    background-color: #fff;
+  }
+  .gutter {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: 50%;
+  }
+  .gutter.gutter-horizontal {
+    cursor: col-resize;
+    background-image: url('https://github.com/nathancahill/Split.js/raw/master/grips/vertical.png');
+  }
+  .gutter.gutter-vertical {
+    cursor: row-resize;
+    background-image: url('https://github.com/nathancahill/Split.js/raw/master/grips/horizontal.png');
+  }
+  .split.split-horizontal, .gutter.gutter-horizontal {
+    height: 100%;
+    float: left
+  }
+
+  .navbar-default {
+    position: fixed;
+    width: 100%;
+  }
+  </style>
+
+    <script>
+require.config({
+  paths: {
+    "split": "../static/js/split.min"
+  }
+});
+    </script>
+
+<script type="text/javascript">
+function adjust_left_iframe_size() {
+  var left_iframe = document.getElementById("left-iframe");
+  var left_div = document.getElementById("left-div");
+  var right_iframe = document.getElementById("right-iframe");
+  var right_div = document.getElementById("right-div");
+
+  left_iframe.style.width = left_div.offsetWidth + "px";
+  right_iframe.style.width = right_div.offsetWidth + "px";
+
+  left_iframe.style.height = $(window).height() + "px";
+  right_iframe.style.height = $(window).height() + "px";
+}
+</script>
+
+    </head>
+</html>
+<body>
+    <div id="left-div" class="split split-horizontal">
+      <div class="split content">
+<iframe src="../workshop/?embedded=1" id="left-iframe" scrolling="yes" width="100%" height="100%" onchange="adjust_left_iframe_size()" onload="adjust_left_iframe_size()"></iframe>
+      </div>
+    </div>
+    <div id="right-div" class="split split-horizontal">
+      <div class="split content">
+<iframe src="../terminal/" scrolling="yes" width="100%" height="100%" id="right-iframe" onload="adjust_left_iframe_size()"></iframe>
+      </div>
+    </div>
+
+<script>
+require(['split'], function(split) {
+    split(['#left-div', '#right-div'], {
+      gutterSize: 8,
+      sizes: [40, 60],
+      cursor: 'col-resize',
+      onDrag: function () {
+        adjust_left_iframe_size();
+    }
+    });
+    window.onload = adjust_left_iframe_size;
+});
+</script>
+
+    <script>
+	function send_to_terminal(value) {
+	    var right_iframe = document.getElementById("right-iframe");
+            right_iframe.contentWindow.butterfly.send(value + '\n');
+	}
+    </script>
+
+</body>
