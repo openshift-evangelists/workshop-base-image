@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ workshop.title or 'Workshop' }}</h1>
-<ul>
+{% if embedded %}
+    <h1>{{ workshop.title or 'Courses' }}</h1>
+{% else %}
+    <h1>Courses</h1>
+{% endif %}
+
     {% if workshop and workshop.courses %}
+        <ul>
         {% for name in workshop.courses %}
             {% set course = workshop.index[name] %}
-            {% if not embedded %}
-                <li><a href="{{ url_for('course', name=name) }}">{{ course.title or name }}</a></li>
-            {% else %}
-                <li><a href="{{ url_for('course', name=name, embedded=1)}}">{{ course.title or name }}</a></li>
-            {% endif %}
+            <li><a href="{{ url_for('course', name=name, embedded=embedded) }}">{{ course.title or name }}</a></li>
         {% endfor %}
+        </ul>
     {% else %}
         <p>No course found!!!</p>
     {% endif %}
-</ul>
 {% endblock %}
