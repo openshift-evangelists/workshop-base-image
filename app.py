@@ -25,7 +25,41 @@ template_loader = FileSystemLoader([
 
 app.jinja_loader = template_loader
 
-app.wsgi_app = ProxyFix(app.wsgi_app)
+# Need to fix up host details when accessed via proxies. When we know we
+# are running through JupyterHub, there will be two proxy values. We
+# can't currently use Werkzeug ProxyFix class as version which supports
+# multiple proxies not released yet.
+
+#if os.environ.get('JUPYTERHUB_USER'):
+#    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=2, x_port=2)
+#else:
+#    app.wsgi_app = ProxyFix(app.wsgi_app)
+
+def proxy_fix(app):
+    def _app(environ, start_response):
+        proto = environ.get('HTTP_X_FORWARDED_PROTO')
+
+        if proto:
+            hops = proto.split(',')
+            if os.environ.get('JUPYTERHUB_USER') and len(hops) > 1:
+                environ['wsgi.url_scheme'] = hops[-2]
+            else:
+                environ['wsgi.url_scheme'] = hops[-1]
+
+        port = environ.get('HTTP_X_FORWARDED_PORT')
+
+        if port:
+            hops = port.split(',')
+            if os.environ.get('JUPYTERHUB_USER') and len(hops) > 1:
+                environ['SERVER_PORT'] = hops[-2]
+            else:
+                environ['SERVER_PORT'] = hops[-1]
+
+        return app(environ, start_response)
+
+    return _app
+
+app.wsgi_app = proxy_fix(app.wsgi_app)
 
 # Use Misaka for markdown rendering.
 
