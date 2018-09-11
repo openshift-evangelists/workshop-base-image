@@ -2,16 +2,15 @@ var http = require('http'),
     httpProxy = require('http-proxy');
     url = require('url');
 
+var uri_root_path = process.env.URI_ROOT_PATH || '/user/default'
+
 var workshop_app = 'http://127.0.0.1:8081';
 var terminal_app = 'http://127.0.0.1:8082';
 
-var terminal_top = process.env.URI_ROOT_PATH || '/user/default'
-var terminal_url = '^' + terminal_top + '/terminal/.*$';
+var terminal_url = '^' + uri_root_path + '/terminal/.*$';
 
 var auth_username = process.env.AUTH_USERNAME
 var auth_password = process.env.AUTH_PASSWORD
-
-console.log('TERMINAL_URL' + terminal_url);
 
 var proxy = httpProxy.createProxyServer({});
 
@@ -56,7 +55,7 @@ var server = http.createServer(function(req, res) {
   var parsed_url = url.parse(req.url);
 
   if (parsed_url.pathname.match(terminal_url))
-      target_app = terminal_app;
+    target_app = terminal_app;
 
   proxy.web(req, res, { target: target_app }, on_error);
 });
@@ -67,7 +66,7 @@ server.on('upgrade', function (req, socket, head) {
   var parsed_url = url.parse(req.url);
 
   if (parsed_url.pathname.match(terminal_url))
-      target_app = terminal_app;
+    target_app = terminal_app;
 
   proxy.ws(req, socket, head, { target: target_app }, on_error);
 });
