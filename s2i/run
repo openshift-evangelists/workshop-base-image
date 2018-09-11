@@ -45,18 +45,24 @@ fi
 
 # Setup 'oc' client in advance if configured to be using local OpenShift.
 
+CA_FILE="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+TOKEN_FILE="/var/run/secrets/kubernetes.io/serviceaccount/token"
+
 if [ x"$KUBERNETES_PORT_443_TCP_ADDR" != x"" ]; then
-    oc config set-cluster local \
-            --server "https://$KUBERNETES_PORT_443_TCP_ADDR" \
-            --insecure-skip-tls-verify
+    if [ -f $CA_FILE ]; then
+        OC_CA_ARGS="--certificate-authority $CA_FILE"
+    else
+        OC_CA_ARGS="--insecure-skip-tls-verify"
+    fi
+
+    oc config set-cluster local $OC_CA_ARGS \
+            --server "https://$KUBERNETES_PORT_443_TCP_ADDR" 
 
     oc config set-context local --cluster local
     oc config use-context local
 
-    if [ -f /var/run/secrets/kubernetes.io/serviceaccount/token ]; then
-        oc login --token \
-            `cat /var/run/secrets/kubernetes.io/serviceaccount/token` \
-            --insecure-skip-tls-verify > /dev/null 2>&1
+    if [ -f $TOKEN_FILE ]; then
+        oc login $OC_CA_ARGS --token `cat $TOKEN_FILE` > /dev/null 2>&1
     fi
 fi
 
