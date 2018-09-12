@@ -43,6 +43,12 @@ RUN HOME=/opt/workshop && \
     pip install supervisor==3.3.4 && \
     mkdir -p /opt/app-root/etc && \
     pip install https://github.com/GrahamDumpleton/butterfly/archive/workshop.zip && \
+    curl -sL -o /tmp/asciidoc.tar.gz https://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.9/asciidoc-8.6.9.tar.gz && \
+    tar -C /tmp -zxvf /tmp/asciidoc.tar.gz && \
+    (cd /tmp/asciidoc-8.6.9 && \
+    ./configure --prefix /opt/workshop && \
+    make install) && \
+    rm -rf /tmp/asciidoc-8.6.9 /tmp/asciidoc.tar.gz && \
     rm /opt/app-root/etc/scl_enable
 
 RUN HOME=/opt/workshop && \
