@@ -42,7 +42,7 @@ RUN HOME=/opt/workshop && \
     source /opt/workshop/bin/activate && \
     pip install supervisor==3.3.4 && \
     mkdir -p /opt/app-root/etc && \
-    pip install https://github.com/GrahamDumpleton/butterfly/archive/uri-root-path.zip && \
+    pip install https://github.com/GrahamDumpleton/butterfly/archive/workshop.zip && \
     rm /opt/app-root/etc/scl_enable
 
 RUN HOME=/opt/workshop && \
