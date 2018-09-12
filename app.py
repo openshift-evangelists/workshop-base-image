@@ -1,5 +1,6 @@
 import os
 import json
+import StringIO
 
 from flask import (Flask, redirect, url_for, render_template,
         request, abort, send_from_directory)
@@ -9,6 +10,7 @@ from werkzeug.contrib.fixers import ProxyFix
 from jinja2 import FileSystemLoader
 
 from flask_misaka import Misaka
+from asciidocapi import AsciiDocAPI
 
 from courses import load_workshop, COURSES_DIRECTORY
 
@@ -61,9 +63,24 @@ def proxy_fix(app):
 
 app.wsgi_app = proxy_fix(app.wsgi_app)
 
-# Use Misaka for markdown rendering.
+# Setup markdown filter for formatting.
 
 mikasa = Misaka(app, fenced_code=True)
+
+# Setup asciidoc filter for formatting.
+
+def asciidoc(value):
+    output = value
+
+    asciidoc = AsciiDocAPI()
+    asciidoc.options('--no-header-footer')
+    result = StringIO.StringIO()
+    asciidoc.execute(StringIO.StringIO(output.encode('utf-8')),
+        result, backend='html5')
+
+    return unicode(result.getvalue(), "utf-8")
+
+app.jinja_env.filters.setdefault('asciidoc', asciidoc)
 
 # Load the details of the workshop.
 
@@ -150,12 +167,13 @@ def module(name, path):
     module = course['index'][path]
 
     filename = '%s/%s' % (name, module['file'])
+    filetype = os.path.splitext(filename)[1]
 
     embedded = request.args.get('embedded')
 
     return render_template("module.html", workshop=workshop_details,
             course=course, module=module, filename=filename,
-            embedded=embedded, **global_context)
+            filetype=filetype, embedded=embedded, **global_context)
 
 @app.route(uri_root_path + '/course/<name>/images/<filename>')
 def image(name, filename):

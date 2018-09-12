@@ -43,11 +43,13 @@ RUN HOME=/opt/workshop && \
     pip install supervisor==3.3.4 && \
     mkdir -p /opt/app-root/etc && \
     pip install https://github.com/GrahamDumpleton/butterfly/archive/workshop.zip && \
+    pip install pygments && \
     curl -sL -o /tmp/asciidoc.tar.gz https://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.9/asciidoc-8.6.9.tar.gz && \
     tar -C /tmp -zxvf /tmp/asciidoc.tar.gz && \
     (cd /tmp/asciidoc-8.6.9 && \
     ./configure --prefix /opt/workshop && \
     make install) && \
+    cp asciidocapi.py /opt/workshop/lib/python2.7/site-packages) && \
     rm -rf /tmp/asciidoc-8.6.9 /tmp/asciidoc.tar.gz && \
     rm /opt/app-root/etc/scl_enable
 
@@ -72,8 +74,8 @@ COPY etc/. /opt/workshop/etc/
 COPY static/. /opt/workshop/static/
 COPY templates/. /opt/workshop/templates/
 
-COPY proxy.js /opt/workshop/
-COPY app.py courses.py /opt/workshop/
+COPY proxy.js app.py courses.py /opt/workshop/
+COPY asciidoc.conf /opt/workshop/etc/asciidoc/
 
 RUN echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
     chmod g+w /etc/passwd
