@@ -48,7 +48,7 @@ RUN HOME=/opt/workshop && \
     tar -C /tmp -zxvf /tmp/asciidoc.tar.gz && \
     (cd /tmp/asciidoc-8.6.9 && \
     ./configure --prefix /opt/workshop && \
-    make install) && \
+    make install && \
     cp asciidocapi.py /opt/workshop/lib/python2.7/site-packages) && \
     rm -rf /tmp/asciidoc-8.6.9 /tmp/asciidoc.tar.gz && \
     rm /opt/app-root/etc/scl_enable
