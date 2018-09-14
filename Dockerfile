@@ -73,7 +73,7 @@ COPY etc/. /opt/workshop/etc/
 COPY static/. /opt/workshop/static/
 COPY templates/. /opt/workshop/templates/
 
-COPY proxy.js app.py courses.py /opt/workshop/
+COPY proxy.js app.py workshop.py /opt/workshop/
 COPY asciidoc.conf /opt/workshop/etc/asciidoc/
 
 RUN echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
@@ -83,7 +83,7 @@ RUN touch /opt/workshop/etc/envvars && \
     chown -R 1001:0 /opt/workshop/etc/envvars && \
     chmod g+w /opt/workshop/etc/envvars
 
-RUN mkdir -p /opt/app-root/courses && \
+RUN mkdir -p /opt/app-root/workshop && \
     mkdir -p /opt/app-root/etc/init.d && \
     mkdir -p /opt/app-root/etc/profile.d && \
     chown -R 1001:0 /opt/app-root && \

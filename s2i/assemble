@@ -8,8 +8,8 @@ set -eo pipefail
 
 shopt -u dotglob
 
-if [ -d /tmp/src/courses ]; then
-    mv /tmp/src/courses/* /opt/app-root/courses/
+if [ -d /tmp/src/workshop ]; then
+    mv /tmp/src/workshop/* /opt/app-root/workshop/
 fi
 
 if [ -d /tmp/src/workspace ]; then

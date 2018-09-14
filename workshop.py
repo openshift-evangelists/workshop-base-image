@@ -1,14 +1,14 @@
 import os
 import json
 
-# The courses need to be placed under /opt/app-root/courses directory.
+# The courses need to be placed under /opt/app-root/workshop directory.
 # Expect to find a pathway.json file which lists the courses which are
 # available. Each course needs to have a matching directory, and in that
 # there needs to be an index.json file which describes the steps which
 # make up the course. The format of these files is the same as is used
 # in Katacoda to make porting easier.
 
-COURSES_DIRECTORY = '/opt/app-root/courses'
+COURSES_DIRECTORY = '/opt/app-root/workshop'
 
 def load_course(name):
     course_file = os.path.join(COURSES_DIRECTORY, name, 'index.json')

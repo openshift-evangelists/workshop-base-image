@@ -12,7 +12,7 @@ from jinja2 import FileSystemLoader
 from flask_misaka import Misaka
 from asciidocapi import AsciiDocAPI
 
-from courses import load_workshop, COURSES_DIRECTORY
+from workshop import load_workshop, COURSES_DIRECTORY
 
 # Create Flask application.
 
@@ -116,7 +116,7 @@ def terminal():
 
 @app.route(uri_root_path + '/dashboard/')
 def dashboard():
-    return render_template("home.html", workshop=workshop_details)
+    return render_template("dashboard.html", workshop=workshop_details)
 
 @app.route(uri_root_path + '/workshop/')
 def workshop():
