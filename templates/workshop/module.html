@@ -25,7 +25,7 @@ img {
 
 <div>
     {% if module.next %}
-        <a href="{{ url_for('module', name=course.name, path=module.next, embedded=embedded) }}">Next</a>
+        <a href="{{ url_for('module', name=course.name, path=module.next.path, embedded=embedded) }}">Next</a>
     {% else %}
         <a href="{{ url_for('course', name=course.name, embedded=embedded) }}">Up</a>
     {% endif %}

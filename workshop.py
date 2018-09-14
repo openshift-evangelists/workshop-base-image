@@ -1,21 +1,6 @@
 import os
 import json
-
-# The courses need to be placed under '/opt/app-root/workshop' directory.
-# Two different ways of defining the course structure are currently
-# supported. The first is to provide a 'workshop_config.py' in the top
-# level directory, with a 'course_config.py' in the course directories.
-# The second is to provide Katacoda style 'pathway.json' and 'index.json'
-# files in the respective directories.
-
-def load_workshop(root='/opt/app-root/workshop'):
-    if os.path.exists(os.path.join(root, 'pathway.json')):
-        return load_katacoda_workshop(root)
-
-    if os.path.exists(os.path.join(root, 'workshop_config.py')):
-        return load_workshop_config(root)
-
-    return Workshop(root)
+import imp
 
 # Define classes to hold details for workshop and course. These are mainly
 # to simplify access from configuration files.
@@ -37,88 +22,67 @@ class Course(object):
         self.title = 'Course'
         self.modules = []
         self.context = {}
-        self.details = {}
+        self.index = {}
 
-# Read and process the 'workshop_config.py' configuation file.
+# The courses need to be placed under '/opt/app-root/workshop'
+# directory. You need to provide a 'workshop_config.py' in the top level
+# directory, with a 'course_config.py' in the course directories.
 
-def load_workshop_config(root):
-    return Workshop(root)
+def update_navigation(course):
+    previous = None
 
-# Read and process Katacoda style 'pathway.json' file.
+    for module in course.modules:
+        module['path'] = os.path.splitext(module['file'])[0] + '.html'
 
-def load_katacoda_course(root, name):
-    directory = os.path.join(root, name)
-    course_file = os.path.join(root, name, 'index.json')
+        module['previous'] = previous
+        module['next'] = None
 
-    if not os.path.exists(course_file):
-        return
+        if previous:
+            previous['next'] = module
 
-    with open(course_file) as fp:
-        data = json.load(fp)
+        previous = module
 
-    if not 'details' in data:
-        return
+        course.index[module['path']] = module
 
-    if not 'steps' in data['details']:
-        return
+def load_workshop(root='/opt/app-root/workshop'):
+    workshop_config = os.path.join(root, 'workshop_config.py')
 
-    course = Course(root, name)
-
-    course.title = data.get('title')
-
-    def create_module(entry, title=None):
-        current = {}
-
-        current['title'] = title or entry['title'] 
-        current['file'] = entry['text']
-        current['path'] = os.path.splitext(current['file'])[0] + '.html'
-
-        current['previous'] = None
-        current['next'] = None
-
-        if course.modules:
-            path = course.modules[-1]
-            previous = course.details[path]
-            previous['next'] = current['path']
-
-        course.modules.append(current['path'])
-        course.details[current['path']] = current
-
-        return current
-
-    if 'intro' in data['details']:
-        if 'text' in data['details']['intro']:
-            create_module(data['details']['intro'], 'Introduction')
-
-    for entry in data['details']['steps']:
-        create_module(entry)
-
-    if 'finish' in data['details']:
-        if 'text' in data['details']['finish']:
-            create_module(data['details']['finish'], 'Summary')
-
-    return course
-
-def load_katacoda_workshop(root):
-    pathway_file = os.path.join(root, 'pathway.json')
-
-    if not os.path.exists(pathway_file):
-        return
-
-    with open(pathway_file) as fp:
-        data = json.load(fp)
+    print('Loading workshop config %s.' % workshop_config)
 
     workshop = Workshop(root)
 
-    workshop.title = data.get('title')
+    if not os.path.exists(workshop_config):
+        return workshop
 
-    for course in data.get('courses', []):
-        name = course.get('course_id')
+    workshop_module = imp.new_module('__workshop__')
+    workshop_module.__file__ = workshop_config
+    workshop_module.workshop = workshop
 
-        if name:
-            course = load_katacoda_course(root, name)
-            if course:
-                workshop.courses.append(name)
-                workshop.details[name] = course
+    with open(workshop_config, 'r') as fp:
+	code = compile(fp.read(), workshop_config, 'exec', dont_inherit=True)
+	exec(code, workshop_module.__dict__, {})
+
+    for name in workshop.courses:
+        course_config = os.path.join(root, name, 'course_config.py')
+
+        print('Loading course config %s.' % workshop_config)
+
+	if not os.path.exists(course_config):
+	    continue
+
+        course = Course(root, name)
+
+	course_module = imp.new_module('__course__')
+	course_module.__file__ = course_config
+	course_module.course = course
+
+	with open(course_config, 'r') as fp:
+	    code = compile(fp.read(), course_config, 'exec', dont_inherit=True)
+	    exec(code, course_module.__dict__, {})
+
+	if course.modules:
+	    workshop.details[name] = course
+
+    update_navigation(course)
 
     return workshop

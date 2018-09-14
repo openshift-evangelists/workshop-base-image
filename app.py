@@ -163,10 +163,10 @@ def module(name, path):
 
     course = workshop_info.details[name]
 
-    if path not in course.details:
+    if path not in course.index:
         abort(404)
 
-    module = course.details[path]
+    module = course.index[path]
 
     filename = '%s/%s' % (name, module['file'])
     filetype = os.path.splitext(filename)[1]
