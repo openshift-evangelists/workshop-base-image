@@ -45,6 +45,19 @@
         height: 100%;
         float: left
     }
+
+    #cover {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        top:0;
+        left: 0;
+        background: #FFFFFF;
+        z-index: 9999;
+        background-image: url({{ url_for('static', filename='img/OpenShiftPanda.png') }});
+        background-position: center;
+        background-repeat: no-repeat;
+    }
 </style>
 
 <script>
@@ -73,10 +86,14 @@
       terminal_iframe.style.width = terminal_div.offsetWidth + "px";
     }
 
+    $(window).on('load', function() {
+       $("#cover").hide();
+    });
 </script>
 </head>
 
 <body>
+<div id="cover"></div>
 
 <div id="workshop-div" class="split split-horizontal">
 <div class="split content">
