@@ -42,8 +42,7 @@ RUN HOME=/opt/workshop && \
     source /opt/workshop/bin/activate && \
     pip install supervisor==3.3.4 && \
     mkdir -p /opt/app-root/etc && \
-    pip install https://github.com/GrahamDumpleton/butterfly/archive/workshop.zip && \
-    pip install pygments && \
+    pip install butterfly==3.2.5 pygments==2.2.0 && \
     curl -sL -o /tmp/asciidoc.tar.gz https://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.9/asciidoc-8.6.9.tar.gz && \
     tar -C /tmp -zxvf /tmp/asciidoc.tar.gz && \
     (cd /tmp/asciidoc-8.6.9 && \
