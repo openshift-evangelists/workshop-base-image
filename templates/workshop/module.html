@@ -12,13 +12,13 @@ img {
 <h1>{{ module.title or module.text }}</h1>
 
 {% if filetype == '.md' %}
-    {% filter markdown %}
-    {% include filename %}
-    {% endfilter %}
+{% filter markdown %}
+{% include filename %}
+{% endfilter %}
 {% elif filetype == '.adoc' %}
-    {% filter asciidoc %}
-    {% include filename %}
-    {% endfilter %}
+{% filter asciidoc %}
+{% include filename %}
+{% endfilter %}
 {% else %}
     <p>Unknown file type: {{ filetype }}.</p>
 {% endif %}
