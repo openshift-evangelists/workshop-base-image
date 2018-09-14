@@ -1,17 +1,54 @@
 import os
 import json
 
-# The courses need to be placed under /opt/app-root/workshop directory.
-# Expect to find a pathway.json file which lists the courses which are
-# available. Each course needs to have a matching directory, and in that
-# there needs to be an index.json file which describes the steps which
-# make up the course. The format of these files is the same as is used
-# in Katacoda to make porting easier.
+# The courses need to be placed under '/opt/app-root/workshop' directory.
+# Two different ways of defining the course structure are currently
+# supported. The first is to provide a 'workshop_config.py' in the top
+# level directory, with a 'course_config.py' in the course directories.
+# The second is to provide Katacoda style 'pathway.json' and 'index.json'
+# files in the respective directories.
 
-COURSES_DIRECTORY = '/opt/app-root/workshop'
+def load_workshop(root='/opt/app-root/workshop'):
+    if os.path.exists(os.path.join(root, 'pathway.json')):
+        return load_katacoda_workshop(root)
 
-def load_course(name):
-    course_file = os.path.join(COURSES_DIRECTORY, name, 'index.json')
+    if os.path.exists(os.path.join(root, 'workshop_config.py')):
+        return load_workshop_config(root)
+
+    return Workshop(root)
+
+# Define classes to hold details for workshop and course. These are mainly
+# to simplify access from configuration files.
+
+class Workshop(object):
+
+    def __init__(self, root):
+        self.root = root
+        self.title = 'Workshop'
+        self.courses = []
+        self.context = {}
+        self.details = {}
+
+class Course(object):
+
+    def __init__(self, root, name):
+        self.root = root
+        self.name = name
+        self.title = 'Course'
+        self.modules = []
+        self.context = {}
+        self.details = {}
+
+# Read and process the 'workshop_config.py' configuation file.
+
+def load_workshop_config(root):
+    return Workshop(root)
+
+# Read and process Katacoda style 'pathway.json' file.
+
+def load_katacoda_course(root, name):
+    directory = os.path.join(root, name)
+    course_file = os.path.join(root, name, 'index.json')
 
     if not os.path.exists(course_file):
         return
@@ -25,14 +62,9 @@ def load_course(name):
     if not 'steps' in data['details']:
         return
 
-    course_details = {}
+    course = Course(root, name)
 
-    course_details['name'] = name
-
-    course_details['title'] = data.get('title')
-
-    course_details['modules'] = []
-    course_details['index'] = {}
+    course.title = data.get('title')
 
     def create_module(entry, title=None):
         current = {}
@@ -44,13 +76,13 @@ def load_course(name):
         current['previous'] = None
         current['next'] = None
 
-        if course_details['modules']:
-            path = course_details['modules'][-1]
-            previous = course_details['index'][path]
+        if course.modules:
+            path = course.modules[-1]
+            previous = course.details[path]
             previous['next'] = current['path']
 
-        course_details['modules'].append(current['path'])
-        course_details['index'][current['path']] = current
+        course.modules.append(current['path'])
+        course.details[current['path']] = current
 
         return current
 
@@ -65,10 +97,10 @@ def load_course(name):
         if 'text' in data['details']['finish']:
             create_module(data['details']['finish'], 'Summary')
 
-    return course_details
+    return course
 
-def load_workshop():
-    pathway_file = os.path.join(COURSES_DIRECTORY, 'pathway.json')
+def load_katacoda_workshop(root):
+    pathway_file = os.path.join(root, 'pathway.json')
 
     if not os.path.exists(pathway_file):
         return
@@ -76,24 +108,17 @@ def load_workshop():
     with open(pathway_file) as fp:
         data = json.load(fp)
 
-    workshop_details = {}
+    workshop = Workshop(root)
 
-    workshop_details['title'] = data.get('title')
-
-    print('workshop title:', workshop_details['title'])
-
-    workshop_details['courses'] = []
-    workshop_details['index'] = {}
+    workshop.title = data.get('title')
 
     for course in data.get('courses', []):
         name = course.get('course_id')
 
-        print('loading course:', name)
-
         if name:
-            course_details = load_course(name)
-            if course_details:
-                workshop_details['courses'].append(name)
-                workshop_details['index'][name] = course_details
+            course = load_katacoda_course(root, name)
+            if course:
+                workshop.courses.append(name)
+                workshop.details[name] = course
 
-    return workshop_details
+    return workshop

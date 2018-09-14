@@ -10,7 +10,7 @@
     {% if workshop and workshop.courses %}
         <ul>
         {% for name in workshop.courses %}
-            {% set course = workshop.index[name] %}
+            {% set course = workshop.details[name] %}
             <li><a href="{{ url_for('course', name=name, embedded=embedded) }}">{{ course.title or name }}</a></li>
         {% endfor %}
         </ul>

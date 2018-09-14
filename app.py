@@ -12,7 +12,7 @@ from jinja2 import FileSystemLoader
 from flask_misaka import Misaka
 from asciidocapi import AsciiDocAPI
 
-from workshop import load_workshop, COURSES_DIRECTORY
+from workshop import load_workshop
 
 # Create Flask application.
 
@@ -20,12 +20,6 @@ uri_root_path = os.environ.get('URI_ROOT_PATH', '')
 static_url_path = uri_root_path + '/static'
 
 app = Flask(__name__, static_url_path=static_url_path)
-
-template_loader = FileSystemLoader([
-        os.path.join(os.path.dirname(__file__), 'templates'),
-        COURSES_DIRECTORY])
-
-app.jinja_loader = template_loader
 
 # Need to fix up host details when accessed via proxies. When we know we
 # are running through JupyterHub, there will be two proxy values. We
@@ -84,9 +78,17 @@ app.jinja_env.filters.setdefault('asciidoc', asciidoc)
 
 # Load the details of the workshop.
 
-workshop_details = load_workshop()
+workshop_info = load_workshop()
 
-print(workshop_details)
+print(workshop_info)
+
+# Setup search path for templates.
+
+template_loader = FileSystemLoader([
+        os.path.join(os.path.dirname(__file__), 'templates'),
+        workshop_info.root])
+
+app.jinja_loader = template_loader
 
 # Set up request handlers.
 
@@ -102,7 +104,7 @@ def home():
     # Even if default page is the dashboard, redirect to the
     # terminal if there are no courses.
 
-    if default_page == 'dashboard' and not workshop_details:
+    if default_page == 'dashboard' and not workshop_info:
         return redirect(url_for('terminal'))
 
     return redirect(url_for(default_page))
@@ -116,7 +118,7 @@ def terminal():
 
 @app.route(uri_root_path + '/dashboard/')
 def dashboard():
-    return render_template("dashboard.html", workshop=workshop_details)
+    return render_template("dashboard.html", workshop=workshop_info)
 
 @app.route(uri_root_path + '/workshop/')
 def workshop():
@@ -124,26 +126,26 @@ def workshop():
 
     # If there is only one course, redirect to that course.
 
-    if workshop_details and len(workshop_details['courses']) == 1:
-        name = workshop_details['courses'][0]
+    if workshop_info and len(workshop_info.courses) == 1:
+        name = workshop_info.courses[0]
         return redirect(url_for('course', name=name, embedded=embedded))
 
-    return render_template("catalog.html", workshop=workshop_details,
+    return render_template("catalog.html", workshop=workshop_info,
             embedded=embedded)
 
 @app.route(uri_root_path + '/course/<name>/')
 def course(name):
-    if not workshop_details:
+    if not workshop_info:
         abort(404)
 
-    if name not in workshop_details['index']:
+    if name not in workshop_info.details:
         abort(404)
 
-    course = workshop_details['index'][name]
+    course = workshop_info.details[name]
 
     embedded = request.args.get('embedded')
 
-    return render_template("course.html", workshop=workshop_details,
+    return render_template("course.html", workshop=workshop_info,
             course=course, embedded=embedded)
 
 global_context = {
@@ -153,31 +155,31 @@ global_context = {
 
 @app.route(uri_root_path + '/course/<name>/<path>')
 def module(name, path):
-    if not workshop_details:
+    if not workshop_info:
         abort(404)
 
-    if name not in workshop_details['index']:
+    if name not in workshop_info.details:
         abort(404)
 
-    course = workshop_details['index'][name]
+    course = workshop_info.details[name]
 
-    if path not in course['index']:
+    if path not in course.details:
         abort(404)
 
-    module = course['index'][path]
+    module = course.details[path]
 
     filename = '%s/%s' % (name, module['file'])
     filetype = os.path.splitext(filename)[1]
 
     embedded = request.args.get('embedded')
 
-    return render_template("module.html", workshop=workshop_details,
+    return render_template("module.html", workshop=workshop_info,
             course=course, module=module, filename=filename,
             filetype=filetype, embedded=embedded, **global_context)
 
 @app.route(uri_root_path + '/course/<name>/images/<filename>')
 def image(name, filename):
-    return send_from_directory(COURSES_DIRECTORY, name+'/images/'+filename)
+    return send_from_directory(workshop_info.root, name+'/images/'+filename)
 
 if __name__ == '__main__':
     from waitress import serve

@@ -6,7 +6,7 @@
         <div>
         <ul>
         {% for name in course.modules %}
-            {% set module = course.index[name] %}
+            {% set module = course.details[name] %}
             <li><a href="{{ url_for('module', name=course.name, path=module.path, embedded=embedded) }}">{{ module.title }}</a></li>
         {% endfor %}
         </ul>
