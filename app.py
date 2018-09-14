@@ -141,14 +141,14 @@ def course(name):
     if name not in workshop_info.details:
         abort(404)
 
-    course = workshop_info.details[name]
+    course_info = workshop_info.details[name]
 
     embedded = request.args.get('embedded')
 
     return render_template("course.html", workshop=workshop_info,
-            course=course, embedded=embedded)
+            course=course_info, embedded=embedded)
 
-global_context = {
+command_context = {
     'execute': '<button onclick="handle_execute(this)">Execute</button>',
     'copy': '<button onclick="handle_copy(this)">Copy</button>',
 }
@@ -161,21 +161,27 @@ def module(name, path):
     if name not in workshop_info.details:
         abort(404)
 
-    course = workshop_info.details[name]
+    course_info = workshop_info.details[name]
 
-    if path not in course.index:
+    if path not in course_info.index:
         abort(404)
 
-    module = course.index[path]
+    module = course_info.index[path]
 
     filename = '%s/%s' % (name, module['file'])
     filetype = os.path.splitext(filename)[1]
 
     embedded = request.args.get('embedded')
 
+    context = {}
+
+    context.update(course_info.context)
+    context.update(workshop_info.context)
+    context.update(command_context)
+
     return render_template("module.html", workshop=workshop_info,
-            course=course, module=module, filename=filename,
-            filetype=filetype, embedded=embedded, **global_context)
+            course=course_info, module=module, filename=filename,
+            filetype=filetype, embedded=embedded, **context)
 
 @app.route(uri_root_path + '/course/<name>/images/<filename>')
 def image(name, filename):
