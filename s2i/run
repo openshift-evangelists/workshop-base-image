@@ -15,14 +15,14 @@ fi
 
 # If no content and supplied a tar.gz GitHub URL for content, download it.
 
-if [ ! -f /opt/app-root/courses/workshop-url.txt ]; then
+if [ ! -f /opt/app-root/workshop/workshop-url.txt ]; then
     if [ x"$WORKSHOP_URL" != x"" ]; then
-        echo $WORKSHOP_URL > /opt/app-root/courses/workshop-url.txt
+        echo $WORKSHOP_URL > /opt/app-root/workshop/workshop-url.txt
         case "$WORKSHOP_URL" in
             https://github.com/*.tar.gz)
                 curl -sL -o /tmp/workshop.tar.gz $WORKSHOP_URL
                 tar -C /opt/app-root --strip-components=1 --no-overwrite-dir \
-                    -zxvf /tmp/workshop.tar.gz '*/courses'
+                    -zxvf /tmp/workshop.tar.gz '*/workshop'
                 tar -C /opt/app-root/src --strip-components=2 --no-overwrite-dir \
                     -zxvf /tmp/workshop.tar.gz '*/workspace'
                 rm -f /tmp/workshop.tar.gz
