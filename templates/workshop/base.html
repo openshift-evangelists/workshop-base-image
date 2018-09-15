@@ -11,6 +11,12 @@
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
+        {% if filetype == '.md' %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/markdown.css') }}">
+        {% elif filetype == '.adoc' %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/asciidoc.css') }}">
+        {% endif %}
+
         {% block meta %}
         {% endblock %}
     </head>
