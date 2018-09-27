@@ -34,6 +34,11 @@
             "required": true
         },
         {
+            "name": "ODO_VERSION",
+            "value": "0.0.12",
+            "required": true
+        },
+        {
             "name": "KUBECTL_VERSION",
             "value": "1.10.0",
             "required": true
@@ -125,6 +130,10 @@
                             {
                                 "name": "OC_VERSION",
                                 "value": "${OC_VERSION}"
+                            },
+                            {
+                                "name": "ODO_VERSION",
+                                "value": "${ODO_VERSION}"
                             },
                             {
                                 "name": "KUBECTL_VERSION",
