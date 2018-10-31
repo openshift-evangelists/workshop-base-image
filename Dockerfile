@@ -12,10 +12,11 @@ RUN HOME=/root && \
 # Install OpenShift client.
 
 ARG OC_VERSION=3.10.41
+ARG ODO_VERSION=0.0.12
 RUN curl -s -o /tmp/oc.tar.gz "https://mirror.openshift.com/pub/openshift-v3/clients/$OC_VERSION/linux/oc.tar.gz" && \
     tar -C /usr/local/bin -zxvf /tmp/oc.tar.gz oc && \
     rm /tmp/oc.tar.gz && \
-    curl -sL -o /usr/local/bin/odo https://github.com/redhat-developer/odo/releases/download/v0.0.10/odo-linux-amd64 && \
+    curl -sL -o /usr/local/bin/odo https://github.com/redhat-developer/odo/releases/download/v$ODO_VERSION/odo-linux-amd64 && \
     chmod +x /usr/local/bin/odo
 
 ARG KUBECTL_VERSION=1.10.0
