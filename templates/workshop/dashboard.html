@@ -68,22 +68,26 @@
     });
 
     function send_to_terminal(value) {
-        var terminal_iframe = document.getElementById("terminal-iframe");
+        var terminal_iframe = document.getElementById("terminal1-iframe");
         terminal_iframe.contentWindow.butterfly.send(value + '\n');
     }
 
     function adjust_frame_sizes() {
       var workshop_iframe = document.getElementById("workshop-iframe");
-      var terminal_iframe = document.getElementById("terminal-iframe");
-
-      workshop_iframe.style.height = $(window).height() - 50 + "px";
-      terminal_iframe.style.height = $(window).height() - 50 + "px";
+      var terminal1_iframe = document.getElementById("terminal1-iframe");
+      var terminal2_iframe = document.getElementById("terminal2-iframe");
 
       var workshop_div = document.getElementById("workshop-div");
-      var terminal_div = document.getElementById("terminal-div");
+      var terminal1_div = document.getElementById("terminal1-div");
+      var terminal2_div = document.getElementById("terminal2-div");
+
+      workshop_iframe.style.height = workshop_div.offsetHeight + "px";
+      terminal1_iframe.style.height = terminal1_div.offsetHeight + "px";
+      terminal2_iframe.style.height = terminal2_div.offsetHeight + "px";
 
       workshop_iframe.style.width = workshop_div.offsetWidth + "px";
-      terminal_iframe.style.width = terminal_div.offsetWidth + "px";
+      terminal1_iframe.style.width = terminal1_div.offsetWidth + "px";
+      terminal2_iframe.style.width = terminal2_div.offsetWidth + "px";
     }
 
     $(window).on('load', function() {
@@ -95,16 +99,17 @@
 <body>
 <div id="cover"></div>
 
-<div id="workshop-div" class="split split-horizontal">
-<div class="split content">
-<iframe src="../workshop/?embedded=1" id="workshop-iframe" onchange="adjust_frame_sizes()" onload="adjust_frame_sizes()"></iframe>
-</div>
+<div id="workshop-div" class="split content split-horizontal">
+<iframe src="{{ url_for( 'workshop', embedded=1) }}" id="workshop-iframe" onchange="adjust_frame_sizes()" onload="adjust_frame_sizes()"></iframe>
 </div>
 
-<div id="terminal-div" class="split split-horizontal">
-<div class="split content">
-<iframe src="../terminal/" id="terminal-iframe" onload="adjust_frame_sizes()"></iframe>
-</div>
+<div id="terminal-div" class="split content split-horizontal">
+    <div id="terminal1-div" class="split content">
+    <iframe src="{{ url_for('terminal', path='session/1') }}" id="terminal1-iframe" onload="adjust_frame_sizes()"></iframe>
+    </div>
+    <div id="terminal2-div" class="split content">
+    <iframe src="{{ url_for('terminal', path='session/2') }}" id="terminal2-iframe" onload="adjust_frame_sizes()"></iframe>
+    </div>
 </div>
 
 <script>
@@ -112,7 +117,15 @@
         split(['#workshop-div', '#terminal-div'], {
             gutterSize: 8,
             sizes: [40, 60],
-            cursor: 'col-resize',
+            cursor: 'row-resize',
+            onDrag: function () {
+                adjust_frame_sizes();
+            }
+        });
+        split(['#terminal1-div', '#terminal2-div'], {
+            gutterSize: 8,
+            sizes: [50, 50],
+            direction: 'vertical',
             onDrag: function () {
                 adjust_frame_sizes();
             }

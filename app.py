@@ -109,7 +109,7 @@ def home():
 
     return redirect(url_for(default_page))
 
-@app.route(uri_root_path + '/terminal/')
+@app.route(uri_root_path + '/terminal/<path>')
 def terminal():
     # Should never get here as the proxy should forward any
     # requests for here through to the terminal process.
