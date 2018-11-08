@@ -5,14 +5,17 @@ var http = require('http'),
 var uri_root_path = process.env.URI_ROOT_PATH || '/user/default'
 
 var workshop_app = 'http://127.0.0.1:8081';
-var terminal_app = 'http://127.0.0.1:8082';
 
+var terminal_app = 'http://127.0.0.1:8082';
 var terminal_url = '^' + uri_root_path + '/terminal/.*$';
 
-var auth_username = process.env.AUTH_USERNAME
-var auth_password = process.env.AUTH_PASSWORD
+var console_app = 'http://127.0.0.1:8083';
+var console_url = '^' + uri_root_path + '/console/.*$';
 
-var proxy = httpProxy.createProxyServer({});
+var auth_username = process.env.AUTH_USERNAME;
+var auth_password = process.env.AUTH_PASSWORD;
+
+var proxy = httpProxy.createProxyServer();
 
 function on_error(err, req, res) {
   res.writeHead(500, {
@@ -57,6 +60,15 @@ var server = http.createServer(function(req, res) {
   if (parsed_url.pathname.match(terminal_url))
     target_app = terminal_app;
 
+  if (parsed_url.pathname.match(console_url))
+    target_app = console_app;
+
+  res.oldWriteHead = res.writeHead;
+  res.writeHead = function(statusCode, headers) {
+    res.removeHeader('x-frame-options');
+    res.oldWriteHead(statusCode, headers);
+  }
+
   proxy.web(req, res, { target: target_app }, on_error);
 });
 
@@ -67,6 +79,9 @@ server.on('upgrade', function (req, socket, head) {
 
   if (parsed_url.pathname.match(terminal_url))
     target_app = terminal_app;
+
+  if (parsed_url.pathname.match(console_url))
+    target_app = console_app;
 
   proxy.ws(req, socket, head, { target: target_app }, on_error);
 });

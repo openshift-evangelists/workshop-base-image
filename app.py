@@ -109,6 +109,14 @@ def home():
 
     return redirect(url_for(default_page))
 
+@app.route(uri_root_path + '/console/', defaults={'path': ''})
+@app.route(uri_root_path + '/console/<path>')
+def console(path):
+    # Should never get here as the proxy should forward any
+    # requests for here through to the console process.
+
+    return 'whoops, how did I get here'
+
 @app.route(uri_root_path + '/terminal/', defaults={'path': ''})
 @app.route(uri_root_path + '/terminal/<path>')
 def terminal(path):

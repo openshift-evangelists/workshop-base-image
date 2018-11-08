@@ -68,26 +68,26 @@
     });
 
     function send_to_terminal(value) {
-        var terminal_iframe = document.getElementById("terminal1-iframe");
+        var terminal_iframe = document.getElementById("terminal-iframe");
         terminal_iframe.contentWindow.butterfly.send(value + '\n');
     }
 
     function adjust_frame_sizes() {
       var workshop_iframe = document.getElementById("workshop-iframe");
-      var terminal1_iframe = document.getElementById("terminal1-iframe");
-      var terminal2_iframe = document.getElementById("terminal2-iframe");
+      var terminal_iframe = document.getElementById("terminal-iframe");
+      var console_iframe = document.getElementById("console-iframe");
 
       var workshop_div = document.getElementById("workshop-div");
-      var terminal1_div = document.getElementById("terminal1-div");
-      var terminal2_div = document.getElementById("terminal2-div");
+      var terminal_div = document.getElementById("terminal-div");
+      var console_div = document.getElementById("console-div");
 
       workshop_iframe.style.height = workshop_div.offsetHeight + "px";
-      terminal1_iframe.style.height = terminal1_div.offsetHeight + "px";
-      terminal2_iframe.style.height = terminal2_div.offsetHeight + "px";
+      terminal_iframe.style.height = terminal_div.offsetHeight + "px";
+      console_iframe.style.height = console_div.offsetHeight + "px";
 
       workshop_iframe.style.width = workshop_div.offsetWidth + "px";
-      terminal1_iframe.style.width = terminal1_div.offsetWidth + "px";
-      terminal2_iframe.style.width = terminal2_div.offsetWidth + "px";
+      terminal_iframe.style.width = terminal_div.offsetWidth + "px";
+      console_iframe.style.width = console_div.offsetWidth + "px";
     }
 
     $(window).on('load', function() {
@@ -103,18 +103,18 @@
 <iframe src="{{ url_for( 'workshop', embedded=1) }}" id="workshop-iframe" onchange="adjust_frame_sizes()" onload="adjust_frame_sizes()"></iframe>
 </div>
 
-<div id="terminal-div" class="split content split-horizontal">
-    <div id="terminal1-div" class="split content">
-    <iframe src="{{ url_for('terminal', path='session/1') }}" id="terminal1-iframe" onload="adjust_frame_sizes()"></iframe>
+<div id="workarea-div" class="split content split-horizontal">
+    <div id="terminal-div" class="split content">
+    <iframe src="{{ url_for('terminal', path='session/1') }}" id="terminal-iframe" onload="adjust_frame_sizes()"></iframe>
     </div>
-    <div id="terminal2-div" class="split content">
-    <iframe src="{{ url_for('terminal', path='session/2') }}" id="terminal2-iframe" onload="adjust_frame_sizes()"></iframe>
+    <div id="console-div" class="split content">
+    <iframe src="{{ url_for('console', path='') }}" id="console-iframe" onload="adjust_frame_sizes()"></iframe>
     </div>
 </div>
 
 <script>
     require(['split'], function(split) {
-        split(['#workshop-div', '#terminal-div'], {
+        split(['#workshop-div', '#workarea-div'], {
             gutterSize: 8,
             sizes: [40, 60],
             cursor: 'row-resize',
@@ -122,7 +122,7 @@
                 adjust_frame_sizes();
             }
         });
-        split(['#terminal1-div', '#terminal2-div'], {
+        split(['#terminal-div', '#console-div'], {
             gutterSize: 8,
             sizes: [50, 50],
             direction: 'vertical',
