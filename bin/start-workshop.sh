@@ -2,8 +2,8 @@
 
 source /opt/workshop/bin/activate
 
-if [ x"$JUPYTERHUB_USER" != x"" ]; then
-    URI_ROOT_PATH=/user/$JUPYTERHUB_USER
+if [ x"$JUPYTERHUB_SERVICE_PREFIX" != x"" ]; then
+    URI_ROOT_PATH=${JUPYTERHUB_SERVICE_PREFIX%/}
 else
     URI_ROOT_PATH=/user/default
 fi
