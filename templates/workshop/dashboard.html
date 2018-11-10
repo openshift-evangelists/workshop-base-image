@@ -121,26 +121,26 @@
     function adjust_frame_sizes() {
       var workshop_iframe = document.getElementById("workshop-iframe");
       var terminal1_iframe = document.getElementById("terminal1-iframe");
-      var terminal2_iframe = document.getElementById("terminal2-iframe");
+      // var terminal2_iframe = document.getElementById("terminal2-iframe");
       var console_iframe = document.getElementById("console-iframe");
 
       var workshop_div = document.getElementById("workshop-div");
       var workarea_div = document.getElementById("workarea-div");
 
       var terminal1_div = document.getElementById("terminal1-div");
-      var terminal2_div = document.getElementById("terminal2-div");
+      // var terminal2_div = document.getElementById("terminal2-div");
       var console_div = document.getElementById("console-div");
 
       workshop_iframe.style.height = workshop_div.offsetHeight + "px";
 
       terminal1_iframe.style.height = workarea_div.offsetHeight-55 + "px";
-      terminal2_iframe.style.height = workarea_div.offsetHeight-55 + "px";
+      // terminal2_iframe.style.height = workarea_div.offsetHeight-55 + "px";
       console_iframe.style.height = workarea_div.offsetHeight-55 + "px";
 
       workshop_iframe.style.width = workshop_div.offsetWidth + "px";
 
       terminal1_iframe.style.width = workarea_div.offsetWidth + "px";
-      terminal2_iframe.style.width = workarea_div.offsetWidth + "px";
+      // terminal2_iframe.style.width = workarea_div.offsetWidth + "px";
       console_iframe.style.width = workarea_div.offsetWidth + "px";
     }
 
@@ -177,7 +177,9 @@
     <div class="tabs-bar">
     <ul class="tabs">
             <li class="tab-link current" data-tab="tab-1">Term #1</li>
+            <!--
             <li class="tab-link" data-tab="tab-2">Term #2</li>
+            -->
             <li class="tab-link" data-tab="tab-3">Console</li>
     </ul>
     </div>
@@ -190,11 +192,13 @@
     </div>
     </div>
 
+    <!--
     <div id="tab-2" class="tab-content">
     <div id="terminal2-div" class="split content">
     <iframe src="{{ url_for('terminal', path='session/2') }}" id="terminal2-iframe"></iframe>
     </div>
     </div>
+    -->
 
     <div id="tab-3" class="tab-content">
     <div id="console-div" class="split content">
