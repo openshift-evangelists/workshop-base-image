@@ -35,11 +35,11 @@
     }
     .gutter.gutter-horizontal {
         cursor: col-resize;
-        background-image: url('https://github.com/nathancahill/Split.js/raw/master/grips/vertical.png');
+        background-image: url('https://github.com/nathancahill/Split.js/raw/master/packages/splitjs/grips/vertical.png');
       }
     .gutter.gutter-vertical {
         cursor: row-resize;
-        background-image: url('https://github.com/nathancahill/Split.js/raw/master/grips/horizontal.png');
+        background-image: url('https://github.com/nathancahill/Split.js/raw/master/packages/splitjs/grips/horizontal.png');
     }
     .split.split-horizontal, .gutter.gutter-horizontal {
         height: 100%;
@@ -58,6 +58,52 @@
         background-position: center;
         background-repeat: no-repeat;
     }
+
+    /* tabs */
+
+    .container{
+        margin: 0 auto;
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+
+    div.tabs-bar{
+        position: fixed;
+        height: 38px;
+    }
+    div.tabs-content {
+        padding-top: 38px;
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+    ul.tabs{
+	    margin: 0px;
+	    padding: 0px;
+	    list-style: none;
+    }
+    ul.tabs li{
+	    background: none;
+	    color: #222;
+	    display: inline-block;
+	    padding: 10px 15px;
+	    cursor: pointer;
+    }
+
+    ul.tabs li.current{
+	    background: #ededed;
+	    color: #222;
+    }
+
+    .tab-content{
+	    display: none;
+	    background: #ededed;
+	    // padding: 15px;
+	    padding: 0px;
+    }
+
+    .tab-content.current{
+	    display: inherit;
+    }
 </style>
 
 <script>
@@ -74,25 +120,47 @@
 
     function adjust_frame_sizes() {
       var workshop_iframe = document.getElementById("workshop-iframe");
-      var terminal_iframe = document.getElementById("terminal-iframe");
+      var terminal1_iframe = document.getElementById("terminal1-iframe");
+      var terminal2_iframe = document.getElementById("terminal2-iframe");
       var console_iframe = document.getElementById("console-iframe");
 
       var workshop_div = document.getElementById("workshop-div");
-      var terminal_div = document.getElementById("terminal-div");
+      var workarea_div = document.getElementById("workarea-div");
+
+      var terminal1_div = document.getElementById("terminal1-div");
+      var terminal2_div = document.getElementById("terminal2-div");
       var console_div = document.getElementById("console-div");
 
       workshop_iframe.style.height = workshop_div.offsetHeight + "px";
-      terminal_iframe.style.height = terminal_div.offsetHeight + "px";
-      console_iframe.style.height = console_div.offsetHeight + "px";
+
+      terminal1_iframe.style.height = workarea_div.offsetHeight-55 + "px";
+      terminal2_iframe.style.height = workarea_div.offsetHeight-55 + "px";
+      console_iframe.style.height = workarea_div.offsetHeight-55 + "px";
 
       workshop_iframe.style.width = workshop_div.offsetWidth + "px";
-      terminal_iframe.style.width = terminal_div.offsetWidth + "px";
-      console_iframe.style.width = console_div.offsetWidth + "px";
+
+      terminal1_iframe.style.width = workarea_div.offsetWidth + "px";
+      terminal2_iframe.style.width = workarea_div.offsetWidth + "px";
+      console_iframe.style.width = workarea_div.offsetWidth + "px";
     }
 
     $(window).on('load', function() {
        $("#cover").hide();
     });
+
+    /* tabs */
+
+    $(document).ready(function(){
+	$('ul.tabs li').click(function(){
+	    var tab_id = $(this).attr('data-tab');
+
+	    $('ul.tabs li').removeClass('current');
+	    $('.tab-content').removeClass('current');
+
+	    $(this).addClass('current');
+	    $("#"+tab_id).addClass('current');
+	})
+    })
 </script>
 </head>
 
@@ -104,32 +172,53 @@
 </div>
 
 <div id="workarea-div" class="split content split-horizontal">
-    <div id="terminal-div" class="split content">
-    <iframe src="{{ url_for('terminal', path='session/1') }}" id="terminal-iframe" onload="adjust_frame_sizes()"></iframe>
+<div class="container">
+
+    <div class="tabs-bar">
+    <ul class="tabs">
+            <li class="tab-link current" data-tab="tab-1">Term #1</li>
+            <li class="tab-link" data-tab="tab-2">Term #2</li>
+            <li class="tab-link" data-tab="tab-3">Console</li>
+    </ul>
     </div>
+
+    <div class="tabs-content">
+
+    <div id="tab-1" class="tab-content current">
+    <div id="terminal1-div" class="split content">
+    <iframe src="{{ url_for('terminal', path='session/1') }}" id="terminal1-iframe"></iframe>
+    </div>
+    </div>
+
+    <div id="tab-2" class="tab-content">
+    <div id="terminal2-div" class="split content">
+    <iframe src="{{ url_for('terminal', path='session/2') }}" id="terminal2-iframe"></iframe>
+    </div>
+    </div>
+
+    <div id="tab-3" class="tab-content">
     <div id="console-div" class="split content">
     <iframe src="{{ url_for('console', path='') }}" id="console-iframe" onload="adjust_frame_sizes()"></iframe>
     </div>
+    </div>
+
+    </div>
+
+</div>
+
 </div>
 
 <script>
     require(['split'], function(split) {
         split(['#workshop-div', '#workarea-div'], {
             gutterSize: 8,
-            sizes: [40, 60],
+            sizes: [35, 65],
             cursor: 'row-resize',
             onDrag: function () {
                 adjust_frame_sizes();
             }
         });
-        split(['#terminal-div', '#console-div'], {
-            gutterSize: 8,
-            sizes: [50, 50],
-            direction: 'vertical',
-            onDrag: function () {
-                adjust_frame_sizes();
-            }
-        });
+
         window.onload = adjust_frame_sizes;
     });
 </script>
