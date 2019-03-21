@@ -3,7 +3,7 @@ FROM centos/s2i-base-centos7:latest
 # Install additional common utilities.
 
 RUN HOME=/root && \
-    INSTALL_PKGS="nano python-devel" && \
+    INSTALL_PKGS="nano python-devel rh-nodejs8" && \
     yum install -y centos-release-scl && \
     yum -y --setopt=tsflags=nodocs install --enablerepo=centosplus $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
