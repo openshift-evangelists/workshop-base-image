@@ -55,7 +55,7 @@ RUN HOME=/opt/workshop && \
 
 RUN HOME=/opt/workshop && \
     cd /opt/workshop && \
-    source scl_source enable rh-nodejs8 && \
+    source scl_source enable rh-nodejs10 && \
     npm install http-proxy
 
 RUN HOME=/opt/workshop && \
